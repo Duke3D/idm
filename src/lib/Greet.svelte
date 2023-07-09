@@ -1,4 +1,4 @@
-<script>
+<!-- <script>
   import { invoke } from '@tauri-apps/api/tauri'
   import { writeTextFile, BaseDirectory } from '@tauri-apps/api/fs'
 import { open } from '@tauri-apps/api/dialog'
@@ -38,3 +38,4 @@ import { open } from '@tauri-apps/api/dialog'
   <p>{greetMsg} +1</p>
 </div>
 
+ -->
