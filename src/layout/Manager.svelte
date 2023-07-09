@@ -43,9 +43,12 @@
         extensions: ['json']
       }]
     })
-    addToRecent(datasetPath)
-    dataset = makeDataset()
-    saveDataset()
+    if(datasetPath) {
+      addToRecent(datasetPath)
+      dataset = makeDataset()
+      saveDataset()
+    }
+
   }
 
   const saveDataset = async () => {

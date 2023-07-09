@@ -2,7 +2,6 @@
   export let text = ''
   export let col = 'sky'
   export let css = ''
-
   export let click = ()=>{}
 </script>
 
