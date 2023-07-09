@@ -1,11 +1,11 @@
 <script>
-  // import Greet from './lib/Greet.svelte'
+  import Manager from './layout/Manager.svelte'
+  // import { writable } from 'svelte/store'
+
 </script>
 
-<main class="container">
-  <h1 class="text-4xl font-bold underline">
-    Hello world!
-  </h1>
+<main class="container font-sans">
+  <Manager/>
 </main>
 
 <style>
