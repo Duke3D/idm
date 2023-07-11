@@ -11,6 +11,7 @@ project.sublime-project
 .vscode
 package-lock.json
 
+debug
 node_modules
 dist
 dist-ssr

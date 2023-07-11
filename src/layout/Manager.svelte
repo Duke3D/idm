@@ -5,6 +5,7 @@
   import { recentDatasets } from '../util/settings.js'
   import { open, save } from '@tauri-apps/api/dialog'
   import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
+  import InputSelect from '../components/inputs/InputSelect.svelte'
 
   let dataset
   let datasetPath
@@ -77,23 +78,16 @@
     {#if dataset !== undefined}
       <DatasetEditor {dataset}/>
       <Button text={'Save Dataset'} col={'sky'} click={saveDataset} css={'mt-2'}/>
-      <Button text={'Close Dataset'} col={'slate'} click={closeDataset} css={'mt-2'}/>
+      <Button text={'Close Dataset'} col={'zinc'} click={closeDataset} css={'mt-2'}/>
+
     {:else}
-      <div class='mt-2'>
-        <label for=recent class='block mb-2 text-sm font-medium text-gray-900 dark:text-white'>Recent Datasets</label>
-        <select id=recent size="5" class='bg-slate-900 rounded-md block w-full' bind:value={datasetPath} on:change={() => console.log(datasetPath)}>
-          {#each $recentDatasets as recent, i}
-          <option class=truncate value={recent}>{recent}</option >
-          {:else}
-          <option>No Datasets</option >
-          {/each}
-        </select>
-      </div>
+      <InputSelect label={'Recent Datasets'} array={$recentDatasets} bind:value={datasetPath}/>
       <Button text={'Load Dataset'} col={'sky'} click={loadDataset} css={'mt-2'}/>
       <Button text={'Create Dataset'} col={'indigo'} css={'mt-2'} click={createDataset}/>
+      <Button text={'Load Dataset'} col={'zinc'} click={loadDataset} css={'mt-2'}/>
     {/if}
   </DataCol>
-  <DataCol css={'flex-auto bg-gray-900'}>
+  <DataCol css={'flex-auto'}>
     {#if dataset !== undefined}
       <h1>Dataset Info</h1>
     {/if}
