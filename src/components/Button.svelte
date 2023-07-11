@@ -21,4 +21,4 @@
 <button
   on:click={click}
   { disabled }
-  class="font-semibold py-1 text-sm {cols} w-full rounded-md {css} disabled:opacity-75">{text}</button>
+  class="font-semibold py-1 text-sm {cols} w-full rounded-md {css} disabled:opacity-75 drop-shadow-md">{text}</button>

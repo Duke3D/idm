@@ -1,23 +1,29 @@
 <script>
-    // import { appDataDir, join } from '@tauri-apps/api/path';
-    // import { convertFileSrc } from '@tauri-apps/api/tauri';
-    // const appDataDirPath = await appDataDir();
-    // const filePath = await join(appDataDirPath, 'assets/video.mp4');
-    // const assetUrl = convertFileSrc(filePath);
+  import { convertFileSrc } from "@tauri-apps/api/tauri";
+  import IconButton from "../components/IconButton.svelte";
+  export let images;
 
-    // const video = document.getElementById('my-video');
-    // const source = document.createElement('source');
-    // source.type = 'video/mp4';
-    // source.src = assetUrl;
-    // video.appendChild(source);
-    // video.load();
-
-    // export let images = []
-
-    // convertFileSrc(filePath)
-
+  // image grid style
+  let imgWidth = 100
+  $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${imgWidth}px, 1fr));`
+  let displayStyle = "grid"
 </script>
-<!-- 
-{#each images as img, i}
 
-{/each} -->
+<div class="grid gap-2 divide-y divide-zinc-700 h-screen" style="grid-template-rows: auto 1fr">
+  <div class="grid gap-1 text-lg" style="grid-template-columns: auto auto 1fr auto">
+    <IconButton id="table_rows" active={displayStyle==="table"} click={ e => { displayStyle="table"}}/>
+    <IconButton id="grid_on" active={displayStyle==="grid"} click={ e => { displayStyle="grid"}}/>
+    <span></span>
+    <input type=range min=50 max=200 bind:value={imgWidth} />
+  </div>
+  <div class="grid gap-2 overflow-y-auto" style={gridStyle}>
+    {#each images as img, i}
+      <img class="rounded-md" src={convertFileSrc(img.path)} alt={img.path} loading="lazy" />
+    {/each}
+  </div>
+</div>
+
+<style> 
+  
+</style>
+

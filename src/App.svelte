@@ -4,9 +4,10 @@
 
 </script>
 
-<main class="container font-sans">
+<main class="font-sans">
   <Manager/>
 </main>
 
 <style>
+
 </style>

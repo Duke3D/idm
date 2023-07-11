@@ -10,7 +10,7 @@
   <select
     id="recent"
     size="5"
-    class="p-1 bg-zinc-700 rounded-md block w-full text-xs font-medium text-zinc-300 overflow-y-auto"
+    class="p-1 bg-zinc-700 rounded-md block w-full text-xs font-medium text-zinc-300 overflow-y-auto drop-shadow-md"
     bind:value
   >
     {#each array as recent, i}
