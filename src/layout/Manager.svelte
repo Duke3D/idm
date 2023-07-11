@@ -15,6 +15,7 @@
     const result = {
       name  : '',
       images: [],
+      inputFolders: [],
       ...( input !== undefined ? input : {} )
     }
     return result
@@ -26,7 +27,7 @@
       datasetPath = await open({
         filters: [{
           name      : 'Dataset',
-          extensions: ['json']
+          extensions: ['json'],
         }]
       })
     if(datasetPath) {
@@ -73,18 +74,16 @@
 
 </script>
 
-<div class="flex flex-row h-screen">
+<div class="flex flex-row h-screen divide-x divide-zinc-700">
   <DataCol css={'w-64'}>
     {#if dataset !== undefined}
       <DatasetEditor {dataset}/>
       <Button text={'Save Dataset'} col={'sky'} click={saveDataset} css={'mt-2'}/>
       <Button text={'Close Dataset'} col={'zinc'} click={closeDataset} css={'mt-2'}/>
-
     {:else}
-      <InputSelect label={'Recent Datasets'} array={$recentDatasets} bind:value={datasetPath}/>
+      <InputSelect label={'Recent Datasets'} array={$recentDatasets} bind:value={datasetPath} empty={"No datasets"}/>
       <Button text={'Load Dataset'} col={'sky'} click={loadDataset} css={'mt-2'}/>
       <Button text={'Create Dataset'} col={'indigo'} css={'mt-2'} click={createDataset}/>
-      <Button text={'Load Dataset'} col={'zinc'} click={loadDataset} css={'mt-2'}/>
     {/if}
   </DataCol>
   <DataCol css={'flex-auto'}>
