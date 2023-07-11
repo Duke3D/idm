@@ -10,13 +10,13 @@
   <select
     id="recent"
     size="5"
-    class="bg-zinc-700 rounded-md block w-full text-sm font-medium text-zinc-300"
+    class="p-1 bg-zinc-700 rounded-md block w-full text-xs font-medium text-zinc-300 overflow-y-auto"
     bind:value
   >
     {#each array as recent, i}
       <option class="truncate font-medium" value={recent}>{recent}</option>
     {:else}
-      <option>{empty}</option>
+      <option class="opacity-75" value={undefined} disabled>{empty}</option>
     {/each}
   </select>
   <slot></slot>
