@@ -4,13 +4,14 @@
   import InputSelect from "../components/inputs/InputSelect.svelte";
   import Button from "../components/Button.svelte";
   import * as datasetFun from "../util/dataset.js";
+  import * as imagesFun from "../util/images.js";
   import InputWrap from "../components/inputs/InputWrap.svelte";
   import { open } from "@tauri-apps/api/dialog";
 
   export let dataset;
   export let path;
   let selectedInputFolder;
-
+  
   const addFolder = async () => {
     let selected = await open({
       directory: true,
@@ -21,6 +22,7 @@
       selected = [selected]
     }
     dataset.inputFolders = [...dataset.inputFolders, ...selected]
+    imagesFun.rescanImageFolders(dataset)
   }
 
   const removeFolder = () => {
@@ -28,6 +30,7 @@
       return folder !== selectedInputFolder;
     });
     selectedInputFolder = undefined
+    imagesFun.rescanImageFolders(dataset)
   };
 
 </script>

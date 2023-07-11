@@ -1,6 +1,7 @@
-import { open, save as savedialog } from '@tauri-apps/api/dialog'
+import { open, save as savedialog  } from '@tauri-apps/api/dialog'
 import { writeTextFile, readTextFile } from '@tauri-apps/api/fs'
 import { recentDatasets } from '../util/settings.js'
+import { rescanImageFolders } from './images.js'
 
 export const conform = (input) => {
 
@@ -11,7 +12,11 @@ export const conform = (input) => {
     inputFolders: [],
     ...( input !== undefined ? input : {} )
   }
-  console.log(result)
+  rescanImageFolders(result)
+  // conform all image shapes
+  result.images.forEach(i => {
+    i.tags = i.tags || []
+  })
   return result
 }
 
@@ -26,7 +31,7 @@ export const load = async (path) => {
     })
   if(path) {
     const data = await readTextFile(path)
-    addToRecent(path)
+    addToRecentDatasets(path)
     return { path, dataset: conform(JSON.parse(data)) }
   } else {
     return { }
@@ -41,7 +46,7 @@ export const create = async (path) => {
     }]
   })
   if(path) {
-    addToRecent(path)
+    addToRecentDatasets(path)
     return { path, dataset: conform() }
   } else {
     return { }
@@ -49,11 +54,14 @@ export const create = async (path) => {
 }
 
 export const save = async (path, data) => {
-  writeTextFile({path, contents: JSON.stringify(data)})
-  addToRecent(path)
+
+  // json.stringify data with formatting of two spaces for indentation
+  const contents = JSON.stringify(data, null, 2)
+  writeTextFile({path, contents})
+  addToRecentDatasets(path)
 }
 
-const addToRecent = (r) => {
+const addToRecentDatasets = (r) => {
   if(r)
     recentDatasets.update( v => {
       if(v.indexOf(r) < 0)
@@ -61,3 +69,4 @@ const addToRecent = (r) => {
       return v
     })
 }
+
