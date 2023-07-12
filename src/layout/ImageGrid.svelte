@@ -2,7 +2,8 @@
   import { convertFileSrc } from "@tauri-apps/api/tauri";
   import { gridImgWidth, imgDisplayStyle } from "../util/settings.js";
   import IconButton from "../components/IconButton.svelte";
-  export let images;
+  export let images
+  export let activeImage
 
   // image grid style
   $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr));`;
@@ -38,7 +39,8 @@
     <div class="grid gap-2 overflow-y-auto" style={gridStyle}>
       {#each images as img, i}
         <img
-          class="rounded-md"
+          on:click={()=>{ activeImage = img }}
+          class="rounded-md border {activeImage === img ? 'border-zinc-400' : 'border-zinc-900'}"
           src={convertFileSrc(img.path)}
           alt={img.path}
           loading="lazy"

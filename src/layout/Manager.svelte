@@ -2,6 +2,8 @@
   import DataCol from "../components/DataCol.svelte";
   import Button from "../components/Button.svelte";
   import DatasetEditor from "../layout/DatasetEditor.svelte";
+  import ExportEditor from "../layout/ExportEditor.svelte";
+  import ImageEditor from "../layout/ImageEditor.svelte";
   import TagEditor from "../layout/TagEditor.svelte";
   import ImageGrid from "../layout/ImageGrid.svelte";
   import { recentDatasets } from "../util/settings.js";
@@ -12,6 +14,7 @@
 
   let activeDataset;
   let datasetPath;
+  let activeImage
 </script>
 
 <div
@@ -53,17 +56,18 @@
   </DataCol>
   <DataCol>
     {#if activeDataset !== undefined}
-      <ImageGrid images={activeDataset.images} />
+      <ImageGrid images={activeDataset.images} bind:activeImage={activeImage} />
+    {/if}
+  </DataCol>
+  <DataCol>
+    {#if activeDataset !== undefined  && activeImage !== undefined}
+    <ImageEditor bind:activeImage={activeImage} />
     {/if}
   </DataCol>
   <DataCol>
     {#if activeDataset !== undefined}
-      <span>Image Edit</span>
-    {/if}
-  </DataCol>
-  <DataCol>
-    {#if activeDataset !== undefined}
-      <TagEditor bind:dataset={activeDataset} />
+      <ExportEditor bind:dataset={activeDataset} />
+      <TagEditor bind:dataset={activeDataset} bind:activeImage={activeImage} />
     {/if}
   </DataCol>
 </div>
