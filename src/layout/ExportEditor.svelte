@@ -20,9 +20,10 @@
     bind:value={dataset.descriptionString}
   />
   <div class="grid grid-cols-2 gap-2">
-    <InputNumber label={"Width"} />
-    <InputNumber label={"Height"} />
+    <InputNumber label={"Width"} bind:value={dataset.exportWidth}/>
+    <InputNumber label={"Height"} bind:value={dataset.exportHeight}/>
   </div>
+  <InputText label={"Export Path"} bind:value={dataset.exportPath} path={"folder"}/>
   {#each dataset.tagGroups as group, i}
     <InputMultiBlock dense={true}>
       {#if editGroups.indexOf(group) >= 0}

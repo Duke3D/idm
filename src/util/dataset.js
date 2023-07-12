@@ -7,11 +7,14 @@ export const conform = (input) => {
 
   // function creates default dataset info and merges it with input if provided
   const result = {
-    name        : '',
-    images      : [],
-    inputFolders: [],
-    tagGroups   : [],
+    name             : '',
+    images           : [],
+    inputFolders     : [],
+    tagGroups        : [],
     descriptionString: '',
+    exportWidth      : 512,
+    exportHeight     : 512,
+    exportPath       : '',
     ...( input !== undefined ? input : {} )
   }
   rescanImageFolders(result)
