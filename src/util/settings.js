@@ -1,9 +1,13 @@
 import { writable } from 'svelte/store'
 
 export const recentDatasets = writable([])
+export const gridImgWidth = writable(100)
+export const imgDisplayStyle = writable("grid")
 
 export const settings = {
-  recentDatasets
+  recentDatasets,
+  gridImgWidth,
+  imgDisplayStyle
 }
 
 const registerSetting = (key, store) => {
