@@ -10,6 +10,7 @@ export const conform = (input) => {
     name        : '',
     images      : [],
     inputFolders: [],
+    tagGroups   : [],
     ...( input !== undefined ? input : {} )
   }
   rescanImageFolders(result)

@@ -5,7 +5,7 @@
 <div class="relative block">
   {#if label !== undefined}
   <label
-    class="block mb-1 text-sm font-medium text-zinc-400"
+    class="block mb-1 text-xs font-medium text-zinc-400"
     for="wrapped">{label}</label
   >
   {/if}

@@ -36,7 +36,7 @@
 </script>
 
 <InputMultiBlock>
-  <InputText label={"Name"} bind:value={dataset.name} />
+  <InputText label={"Dataset Name"} bind:value={dataset.name} />
   <InputSelect
     empty={"No image folders"}
     label={"Input Image Folders"}
