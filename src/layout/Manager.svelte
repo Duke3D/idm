@@ -4,7 +4,6 @@
   import DatasetEditor from "../layout/DatasetEditor.svelte";
   import ExportEditor from "../layout/ExportEditor.svelte";
   import ImageEditor from "../layout/ImageEditor.svelte";
-  import TagEditor from "../layout/TagEditor.svelte";
   import ImageGrid from "../layout/ImageGrid.svelte";
   import { recentDatasets } from "../util/settings.js";
   import * as dataset from "../util/dataset.js";
@@ -61,13 +60,14 @@
   </DataCol>
   <DataCol>
     {#if activeDataset !== undefined  && activeImage !== undefined}
-    <ImageEditor bind:activeImage={activeImage} />
+    <ImageEditor bind:dataset={activeDataset} bind:activeImage={activeImage} />
     {/if}
   </DataCol>
   <DataCol>
     {#if activeDataset !== undefined}
-      <ExportEditor bind:dataset={activeDataset} />
-      <TagEditor bind:dataset={activeDataset} bind:activeImage={activeImage} />
+    <InputMultiBlock>
+      <ExportEditor bind:dataset={activeDataset} bind:activeImage={activeImage} />
+    </InputMultiBlock>
     {/if}
   </DataCol>
 </div>
