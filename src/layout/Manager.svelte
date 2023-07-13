@@ -55,7 +55,7 @@
   </DataCol>
   <DataCol>
     {#if activeDataset !== undefined}
-      <ImageGrid images={activeDataset.images} bind:activeImage={activeImage} />
+      <ImageGrid bind:dataset={activeDataset} images={activeDataset.images} bind:activeImage={activeImage} />
     {/if}
   </DataCol>
   <DataCol>

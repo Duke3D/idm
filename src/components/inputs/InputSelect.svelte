@@ -13,7 +13,7 @@
     class="p-1 bg-zinc-700 rounded-md block w-full text-xs font-medium text-zinc-300 overflow-y-auto drop-shadow-md"
     bind:value
   >
-    {#each array as recent, i}
+    {#each array as recent}
       <option class="truncate font-medium" value={recent}>{recent}</option>
     {:else}
       <option class="opacity-75" value={undefined} disabled>{empty}</option>

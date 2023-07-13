@@ -24,7 +24,7 @@
     <InputNumber label={"Height"} bind:value={dataset.exportHeight}/>
   </div>
   <InputText label={"Export Path"} bind:value={dataset.exportPath} path={"folder"}/>
-  {#each dataset.tagGroups as group, i}
+  {#each dataset.tagGroups as group, i (group.name)}
     <InputMultiBlock dense={true}>
       {#if editGroups.indexOf(group) >= 0}
         <InputText label={"Group Name"} bind:value={group.name} />

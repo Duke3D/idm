@@ -1,12 +1,60 @@
 <script>
   import { convertFileSrc } from "@tauri-apps/api/tauri";
-  import { gridImgWidth, imgDisplayStyle } from "../util/settings.js";
+  import { gridImgWidth, imgDisplayStyle, gridImgFilter } from "../util/settings.js";
   import IconButton from "../components/IconButton.svelte";
+  import InputText from "../components/inputs/InputText.svelte";
   export let images
+  export let dataset
   export let activeImage
 
   // image grid style
   $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr));`;
+
+  // filter result
+  $: images_filtered = filterImages(images, $gridImgFilter)
+  const filterImages = (i, f)=>{
+    // take the filter string and split it by spaced and commans
+    const filter = f.split(/[\s,]+/)
+    // iterate the filter objects in the array
+    filter.forEach( fil => {
+      // Filter for path, tags ("tag", !"tag"), or tag counts ({group}>2, {any}<1)
+      if(fil.match(/^".*"$/)){
+         // "tag" - must have tag
+        const tag = fil.replace(/"/g, "")
+        i = i.filter( img => img.tags.includes(tag) )
+        console.log(`must have tag ${tag}`)
+      } else if(fil.match(/^!"[^"]*"$/)){
+        // !"tag" - must not have tag
+        const tag = fil.replace(/^!"(.*)"$/, '$1');
+        i = i.filter( img => !img.tags.includes(tag) )
+        console.log(`must not have tag ${tag}`)
+      } else if(fil.match(/{.*}>[0-9]+/)){
+        // {group}>2 - must have more than 2 tags
+        const [group, count] = fil.replace(/[{}]/g, "").split(">")
+        const tags = dataset.tagGroups.find( g => g.name == group)?.tags
+        if(tags)
+          i = i.filter( img => img.tags.filter( tag => tags.includes(tag)).length > count )
+        else if(group == "any")
+          i = i.filter( img => img.tags.length > count)
+        console.log(`must have more than ${count} tags in group ${group}`)
+      } else if(fil.match(/{.*}<[0-9]+/)){
+        // {any}<1 - must have less than 1 tag
+        const [group, count] = fil.replace(/[{}]/g, "").split("<")
+        const tags = dataset.tagGroups.find( g => g.name == group)?.tags
+        if(tags)
+          i = i.filter( img => img.tags.filter( tag => tags.includes(tag)).length < count )
+        else if(group == "any")
+          i = i.filter( img => img.tags.length < count)
+        console.log(`must have less than ${count} tags in group ${group}`)
+      } else {
+        // path - path must include
+        i = i.filter( img => img.path.includes(fil) )
+        console.log(`path must include ${fil}`)
+      }
+    })
+    console.log(i.length)
+    return i
+  }
 
 </script>
 
@@ -16,7 +64,7 @@
 >
   <div
     class="grid gap-1 text-lg"
-    style="grid-template-columns: auto auto 1fr auto"
+    style="grid-template-columns: auto auto 1fr auto auto"
   >
     <IconButton
       id="table_rows"
@@ -32,15 +80,17 @@
         $imgDisplayStyle = "grid";
       }}
     />
-    <span />
+    <InputText bind:value={$gridImgFilter} placeholder={`Filter for path, tags ("tag", !"tag"), or tag counts ({group}>2, {any}<1)`}/>
     <input type="range" min="80" max="250" bind:value={$gridImgWidth} />
+
+    
   </div>
   {#if $imgDisplayStyle === "grid"}
     <div class="grid gap-2 overflow-y-auto" style={gridStyle}>
-      {#each images as img, i}
+      {#each images_filtered as img (img.path)}
         <img
           on:click={()=>{ activeImage = img }}
-          class="rounded-md border {activeImage === img ? 'border-zinc-400' : 'border-zinc-900'}"
+          class="cursor-pointer rounded-md border {activeImage === img ? 'border-zinc-400' : 'border-zinc-900 hover:border-zinc-600'}"
           src={convertFileSrc(img.path)}
           alt={img.path}
           loading="lazy"
@@ -57,7 +107,7 @@
           </tr>
         </thead>
         <tbody>
-          {#each images as img, i}
+          {#each images as img (img.path)}
             <tr>
               <td>{i}</td>
               <td class="truncate" style='text-align:right;'><span>{img.path}</span></td>
