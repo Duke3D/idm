@@ -25,7 +25,7 @@ export const getImageDescription = (dataset, image) => {
     // if there is only one tag, return it
     if(tags.length === 1) return tags[0]
     // if there are multiple tags, return them comma separated
-    return tags.join(', ')
+    return tags.join(' and ')
   })
 
   // remove any double spaces

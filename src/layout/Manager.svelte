@@ -20,7 +20,7 @@
 
 <div
   class="grid overflow-hidden h-screen divide-x divide-zinc-700"
-  style="grid-template-columns:250px auto 250px 250px"
+  style="grid-template-columns:250px 2fr 1fr 250px"
 >
   <DataCol>
     {#if activeDataset !== undefined}

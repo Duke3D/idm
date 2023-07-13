@@ -40,7 +40,7 @@
   const keyDown = (e) => {
     // ctrl + s, only if down
     if (e.ctrlKey && e.key === "s") {
-      e.preventDefault();
+      e.preventDefault()
       datasetFun.save(path, dataset);
       serializedDataset = JSON.stringify(dataset);
       change = false;

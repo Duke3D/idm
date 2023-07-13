@@ -1,6 +1,7 @@
 <script>
   import { convertFileSrc } from "@tauri-apps/api/tauri";
   import { gridImgWidth, imgDisplayStyle, gridImgFilter } from "../util/settings.js";
+  import { onMount, onDestroy } from "svelte";
   import IconButton from "../components/IconButton.svelte";
   import InputText from "../components/inputs/InputText.svelte";
   export let images
@@ -49,6 +50,31 @@
     })
     return i
   }
+
+  const keyDown = (e) => {
+    // arrow key up and down to navigate to next, previous image
+    if (e.key === "ArrowUp") {
+      e.preventDefault()
+      const index = images_filtered.findIndex((img) => img === activeImage);
+      if (index > 0) {
+        activeImage = images_filtered[index - 1];
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault()
+      const index = images_filtered.findIndex((img) => img === activeImage);
+      if (index < images_filtered.length - 1) {
+        activeImage = images_filtered[index + 1];
+      }
+    }
+  };
+
+  onMount(() => {
+    window.addEventListener("keydown", keyDown);
+  });
+
+  onDestroy(() => {
+    window.removeEventListener("keydown", keyDown);
+  });
 
 </script>
 

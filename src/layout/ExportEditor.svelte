@@ -25,8 +25,12 @@
     bind:value={dataset.descriptionString}
   />
   <div class="grid grid-cols-2 gap-2">
-    <InputNumber label={"Width"} bind:value={dataset.exportWidth} />
-    <InputNumber label={"Height"} bind:value={dataset.exportHeight} />
+    <InputNumber label={"Precrop Width"} bind:value={dataset.exportCropWidth} />
+    <InputNumber label={"Precrop Height"} bind:value={dataset.exportCropHeight} />
+  </div>
+  <div class="grid grid-cols-2 gap-2">
+    <InputNumber label={"Out Width"} bind:value={dataset.exportWidth} />
+    <InputNumber label={"Out Height"} bind:value={dataset.exportHeight} />
   </div>
   <InputText
     label={"Export Path"}
@@ -52,6 +56,8 @@
             description: getImageDescription(dataset, img),
             width: dataset.exportWidth,
             height: dataset.exportHeight,
+            cropwidth: dataset.exportCropWidth,
+            cropheight: dataset.exportCropHeight,
           }).then(() => (exportStatus = `Exporting: ${++done}/${max}`))
         );
 
@@ -69,7 +75,7 @@
     />
   </div>
 
-  {#each dataset.tagGroups as group, i (group.name)}
+  {#each dataset.tagGroups as group, i}
     <InputMultiBlock dense={true}>
       {#if editGroups.indexOf(group) >= 0}
         <InputText label={"Group Name"} bind:value={group.name} />
@@ -112,7 +118,7 @@
           <button
             class="{activeImage?.tags.indexOf(tag) >= 0
               ? 'bg-zinc-500 text-zinc-200 border'
-              : 'bg-zinc-700 text-zinc-400 border border-zinc-800'} text-xs font-bold shadow-md rounded-md px-2 mr-1 mb-0.5"
+              : 'bg-zinc-700 text-zinc-400 border border-zinc-800'} focus-visible:outline-none text-xs font-bold shadow-md rounded-md px-2 mr-1 mb-0.5"
             on:click={(e) => {
               if (activeImage) {
                 activeImage = toggleTagOnImage(activeImage, tag);
