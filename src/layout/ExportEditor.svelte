@@ -49,6 +49,7 @@
               (dataset.exportPath.endsWith("/") ? "" : "/") +
               i +
               ".png",
+            description: getImageDescription(dataset, img),
             width: dataset.exportWidth,
             height: dataset.exportHeight,
           }).then(() => (exportStatus = `Exporting: ${++done}/${max}`))
