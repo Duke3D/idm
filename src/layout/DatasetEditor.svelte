@@ -7,32 +7,53 @@
   import * as imagesFun from "../util/images.js";
   import InputWrap from "../components/inputs/InputWrap.svelte";
   import { open } from "@tauri-apps/api/dialog";
+  import { onMount, onDestroy } from "svelte";
 
   export let dataset;
   export let path;
   let selectedInputFolder;
-  
+
   const addFolder = async () => {
     let selected = await open({
       directory: true,
       multiple: true,
-    })
-    if(selected === null) return
-    if(!Array.isArray(selected)) {
-      selected = [selected]
+    });
+    if (selected === null) return;
+    if (!Array.isArray(selected)) {
+      selected = [selected];
     }
-    dataset.inputFolders = [...dataset.inputFolders, ...selected]
-    imagesFun.rescanImageFolders(dataset)
-  }
+    dataset.inputFolders = [...dataset.inputFolders, ...selected];
+    imagesFun.rescanImageFolders(dataset);
+  };
 
   const removeFolder = () => {
     dataset.inputFolders = dataset.inputFolders.filter((folder) => {
       return folder !== selectedInputFolder;
     });
-    selectedInputFolder = undefined
-    imagesFun.rescanImageFolders(dataset)
+    selectedInputFolder = undefined;
+    imagesFun.rescanImageFolders(dataset);
   };
 
+  let serializedDataset = JSON.stringify(dataset);
+  $: change = change || serializedDataset !== JSON.stringify(dataset);
+
+  const keyDown = (e) => {
+    // ctrl + s, only if down
+    if (e.ctrlKey && e.key === "s") {
+      e.preventDefault();
+      datasetFun.save(path, dataset);
+      serializedDataset = JSON.stringify(dataset);
+      change = false;
+    }
+  };
+
+  onMount(() => {
+    window.addEventListener("keydown", keyDown);
+  });
+
+  onDestroy(() => {
+    window.removeEventListener("keydown", keyDown);
+  });
 </script>
 
 <InputMultiBlock>
@@ -56,7 +77,7 @@
   <InputWrap>
     <Button
       text={"Save Dataset"}
-      col={"sky"}
+      col={change ? "sky" : "zinc"}
       click={() => {
         datasetFun.save(path, dataset);
       }}

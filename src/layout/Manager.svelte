@@ -13,7 +13,9 @@
 
   let activeDataset;
   let datasetPath;
-  let activeImage
+  let activeImage;
+
+
 </script>
 
 <div
@@ -55,19 +57,23 @@
   </DataCol>
   <DataCol>
     {#if activeDataset !== undefined}
-      <ImageGrid bind:dataset={activeDataset} images={activeDataset.images} bind:activeImage={activeImage} />
+      <ImageGrid
+        bind:dataset={activeDataset}
+        images={activeDataset.images}
+        bind:activeImage
+      />
     {/if}
   </DataCol>
   <DataCol>
-    {#if activeDataset !== undefined  && activeImage !== undefined}
-    <ImageEditor bind:dataset={activeDataset} bind:activeImage={activeImage} />
+    {#if activeDataset !== undefined && activeImage !== undefined}
+      <ImageEditor bind:dataset={activeDataset} bind:activeImage />
     {/if}
   </DataCol>
   <DataCol>
     {#if activeDataset !== undefined}
-    <InputMultiBlock>
-      <ExportEditor bind:dataset={activeDataset} bind:activeImage={activeImage} />
-    </InputMultiBlock>
+      <InputMultiBlock>
+        <ExportEditor bind:dataset={activeDataset} bind:activeImage />
+      </InputMultiBlock>
     {/if}
   </DataCol>
 </div>
