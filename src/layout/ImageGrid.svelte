@@ -22,12 +22,10 @@
          // "tag" - must have tag
         const tag = fil.replace(/"/g, "")
         i = i.filter( img => img.tags.includes(tag) )
-        console.log(`must have tag ${tag}`)
       } else if(fil.match(/^!"[^"]*"$/)){
         // !"tag" - must not have tag
         const tag = fil.replace(/^!"(.*)"$/, '$1');
         i = i.filter( img => !img.tags.includes(tag) )
-        console.log(`must not have tag ${tag}`)
       } else if(fil.match(/{.*}>[0-9]+/)){
         // {group}>2 - must have more than 2 tags
         const [group, count] = fil.replace(/[{}]/g, "").split(">")
@@ -36,7 +34,6 @@
           i = i.filter( img => img.tags.filter( tag => tags.includes(tag)).length > count )
         else if(group == "any")
           i = i.filter( img => img.tags.length > count)
-        console.log(`must have more than ${count} tags in group ${group}`)
       } else if(fil.match(/{.*}<[0-9]+/)){
         // {any}<1 - must have less than 1 tag
         const [group, count] = fil.replace(/[{}]/g, "").split("<")
@@ -45,14 +42,11 @@
           i = i.filter( img => img.tags.filter( tag => tags.includes(tag)).length < count )
         else if(group == "any")
           i = i.filter( img => img.tags.length < count)
-        console.log(`must have less than ${count} tags in group ${group}`)
       } else {
         // path - path must include
         i = i.filter( img => img.path.includes(fil) )
-        console.log(`path must include ${fil}`)
       }
     })
-    console.log(i.length)
     return i
   }
 

@@ -4,14 +4,19 @@
   import InputText from "../components/inputs/InputText.svelte";
   import InputSelect from "../components/inputs/InputSelect.svelte";
   import Button from "../components/Button.svelte";
-  import { parseTags, toggleTagOnImage } from "../util/tags";
+  import {
+    parseTags,
+    toggleTagOnImage,
+    getImageDescription,
+  } from "../util/tags";
   import IconButton from "../components/IconButton.svelte";
   import InputNumber from "../components/inputs/InputNumber.svelte";
-
-  export let dataset;
-  export let activeImage;
+  import { invoke } from "@tauri-apps/api/tauri";
+  export let dataset = undefined;
+  export let activeImage = undefined;
 
   let editGroups = [];
+  let exportStatus = "Export";
 </script>
 
 <InputMultiBlock>
@@ -20,10 +25,49 @@
     bind:value={dataset.descriptionString}
   />
   <div class="grid grid-cols-2 gap-2">
-    <InputNumber label={"Width"} bind:value={dataset.exportWidth}/>
-    <InputNumber label={"Height"} bind:value={dataset.exportHeight}/>
+    <InputNumber label={"Width"} bind:value={dataset.exportWidth} />
+    <InputNumber label={"Height"} bind:value={dataset.exportHeight} />
   </div>
-  <InputText label={"Export Path"} bind:value={dataset.exportPath} path={"folder"}/>
+  <InputText
+    label={"Export Path"}
+    bind:value={dataset.exportPath}
+    path={"folder"}
+  />
+  <div class="grid grid-cols-2 gap-2">
+    <Button
+      text={exportStatus}
+      col={"green"}
+      click={() => {
+        let done = 0,
+          max = dataset.images.length;
+        exportStatus = `Exporting: 0/${max}`;
+        let tasks = dataset.images.map((img, i) =>
+          invoke("export_image", {
+            imgPath: img.path,
+            exportPath:
+              dataset.exportPath +
+              (dataset.exportPath.endsWith("/") ? "" : "/") +
+              i +
+              ".png",
+            width: dataset.exportWidth,
+            height: dataset.exportHeight,
+          }).then(() => (exportStatus = `Exporting: ${++done}/${max}`))
+        );
+
+        Promise.all(tasks).then(() => {
+          exportStatus = `Export done! ${max}/${max}`;
+        });
+      }}
+    />
+    <Button
+      text={"Reveal in Explorer"}
+      col={"zinc"}
+      click={() => {
+        invoke("open_explorer", { path: dataset.exportPath });
+      }}
+    />
+  </div>
+
   {#each dataset.tagGroups as group, i (group.name)}
     <InputMultiBlock dense={true}>
       {#if editGroups.indexOf(group) >= 0}
