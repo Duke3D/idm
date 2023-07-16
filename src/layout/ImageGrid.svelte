@@ -1,69 +1,83 @@
 <script>
   import { convertFileSrc } from "@tauri-apps/api/tauri";
-  import { gridImgWidth, imgDisplayStyle, gridImgFilter } from "../util/settings.js";
+  import {
+    gridImgWidth,
+    imgDisplayStyle,
+    gridImgFilter,
+  } from "../util/settings.js";
   import { onMount, onDestroy } from "svelte";
   import IconButton from "../components/IconButton.svelte";
   import InputText from "../components/inputs/InputText.svelte";
-  export let images
-  export let dataset
-  export let activeImage
+  export let images;
+  export let dataset;
+  export let activeImage;
 
   // image grid style
   $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr));`;
 
   // filter result
-  $: images_filtered = filterImages(images, $gridImgFilter)
-  const filterImages = (i, f)=>{
+  $: visibleImages = getGridImages(images, $gridImgFilter);
+  const getGridImages = (i, f) => {
     // take the filter string and split it by spaced and commans
-    const filter = f.split(/[\s,]+/)
+    const filter = f.split(/[\s,]+/);
     // iterate the filter objects in the array
-    filter.forEach( fil => {
+    filter.forEach((fil) => {
       // Filter for path, tags ("tag", !"tag"), or tag counts ({group}>2, {any}<1)
-      if(fil.match(/^".*"$/)){
-         // "tag" - must have tag
-        const tag = fil.replace(/"/g, "")
-        i = i.filter( img => img.tags.includes(tag) )
-      } else if(fil.match(/^!"[^"]*"$/)){
+      if (fil.match(/^".*"$/)) {
+        // "tag" - must have tag
+        const tag = fil.replace(/"/g, "");
+        i = i.filter((img) => img.tags.includes(tag));
+      } else if (fil.match(/^!"[^"]*"$/)) {
         // !"tag" - must not have tag
-        const tag = fil.replace(/^!"(.*)"$/, '$1');
-        i = i.filter( img => !img.tags.includes(tag) )
-      } else if(fil.match(/{.*}>[0-9]+/)){
+        const tag = fil.replace(/^!"(.*)"$/, "$1");
+        i = i.filter((img) => !img.tags.includes(tag));
+      } else if (fil.match(/{.*}>[0-9]+/)) {
         // {group}>2 - must have more than 2 tags
-        const [group, count] = fil.replace(/[{}]/g, "").split(">")
-        const tags = dataset.tagGroups.find( g => g.name == group)?.tags
-        if(tags)
-          i = i.filter( img => img.tags.filter( tag => tags.includes(tag)).length > count )
-        else if(group == "any")
-          i = i.filter( img => img.tags.length > count)
-      } else if(fil.match(/{.*}<[0-9]+/)){
+        const [group, count] = fil.replace(/[{}]/g, "").split(">");
+        const tags = dataset.tagGroups.find((g) => g.name == group)?.tags;
+        if (tags)
+          i = i.filter(
+            (img) => img.tags.filter((tag) => tags.includes(tag)).length > count
+          );
+        else if (group == "any") i = i.filter((img) => img.tags.length > count);
+      } else if (fil.match(/{.*}<[0-9]+/)) {
         // {any}<1 - must have less than 1 tag
-        const [group, count] = fil.replace(/[{}]/g, "").split("<")
-        const tags = dataset.tagGroups.find( g => g.name == group)?.tags
-        if(tags)
-          i = i.filter( img => img.tags.filter( tag => tags.includes(tag)).length < count )
-        else if(group == "any")
-          i = i.filter( img => img.tags.length < count)
+        const [group, count] = fil.replace(/[{}]/g, "").split("<");
+        const tags = dataset.tagGroups.find((g) => g.name == group)?.tags;
+        if (tags)
+          i = i.filter(
+            (img) => img.tags.filter((tag) => tags.includes(tag)).length < count
+          );
+        else if (group == "any") i = i.filter((img) => img.tags.length < count);
       } else {
         // path - path must include
-        i = i.filter( img => img.path.includes(fil) )
+        i = i.filter((img) => img.path.includes(fil));
       }
-    })
-    return i
-  }
+    });
+
+    // sort
+    i = i.sort((a, b) => {
+      if (!a.export) return 1;
+      if (!b.export) return -1;
+      return 0;
+    });
+
+    return i;
+  };
 
   const keyDown = (e) => {
     // arrow key up and down to navigate to next, previous image
     if (e.key === "ArrowUp") {
-      e.preventDefault()
-      const index = images_filtered.findIndex((img) => img === activeImage);
+      e.preventDefault();
+      const index = visibleImages.findIndex((img) => img === activeImage);
       if (index > 0) {
-        activeImage = images_filtered[index - 1];
+        activeImage = visibleImages[index - 1];
       }
     } else if (e.key === "ArrowDown") {
-      e.preventDefault()
-      const index = images_filtered.findIndex((img) => img === activeImage);
-      if (index < images_filtered.length - 1) {
-        activeImage = images_filtered[index + 1];
+      e.preventDefault();
+      const index = visibleImages.findIndex((img) => img === activeImage);
+      if (index < visibleImages.length - 1) {
+        activeImage = visibleImages[index + 1];
       }
     }
   };
@@ -75,7 +89,6 @@
   onDestroy(() => {
     window.removeEventListener("keydown", keyDown);
   });
-
 </script>
 
 <div
@@ -89,28 +102,36 @@
     <IconButton
       id="table_rows"
       active={$imgDisplayStyle === "table"}
-      click={(e) => {
+      on:click={(e) => {
         $imgDisplayStyle = "table";
       }}
     />
     <IconButton
       id="grid_on"
       active={$imgDisplayStyle === "grid"}
-      click={(e) => {
+      on:click={(e) => {
         $imgDisplayStyle = "grid";
       }}
     />
-    <InputText bind:value={$gridImgFilter} placeholder={`Filter for path, tags ("tag", !"tag"), or tag counts ({group}>2, {any}<1)`}/>
+    <InputText
+      bind:value={$gridImgFilter}
+      placeholder={`Filter for path, tags ("tag", !"tag"), or tag counts ({group}>2, {any}<1)`}
+    />
     <input type="range" min="80" max="250" bind:value={$gridImgWidth} />
-
-    
   </div>
   {#if $imgDisplayStyle === "grid"}
     <div class="grid gap-2 overflow-y-auto" style={gridStyle}>
-      {#each images_filtered as img (img.path)}
+      {#each visibleImages as img (img.path)}
+        <!-- svelte-ignore a11y-click-events-have-key-events -->
         <img
-          on:click={()=>{ activeImage = img }}
-          class="cursor-pointer rounded-md border {!img.export ? 'opacity-30' : ''} {activeImage === img ? 'border-zinc-400' : 'border-zinc-900 hover:border-zinc-600'}"
+          on:click={() => {
+            activeImage = img;
+          }}
+          class="cursor-pointer rounded-md drop-shadow-md border border-zinc-900 {!img.export
+            ? 'opacity-30 grayscale brightness-50'
+            : ''} {activeImage === img
+            ? 'outline outline-zinc-400'
+            : 'hover:border-zinc-500'}"
           src={convertFileSrc(img.path)}
           alt={img.path}
           loading="lazy"
@@ -118,7 +139,7 @@
       {/each}
     </div>
   {:else if $imgDisplayStyle === "table"}
-    <div class="overflow-y-auto"> 
+    <div class="overflow-y-auto">
       <table class="table-auto w-full">
         <thead>
           <tr>
@@ -130,7 +151,9 @@
           {#each images as img, i (img.path)}
             <tr>
               <td>{i}</td>
-              <td class="truncate" style='text-align:right;'><span>{img.path}</span></td>
+              <td class="truncate" style="text-align:right;"
+                ><span>{img.path}</span></td
+              >
             </tr>
           {/each}
         </tbody>

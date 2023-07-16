@@ -21,7 +21,7 @@
       <IconButton
         id={path==="folder" ? "folder_open" : "file_open"}
         active={true}
-        click={async (e) => {
+        on:click={async (e) => {
           const result = await open({
             directory: true,
             multiple: false,

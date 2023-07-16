@@ -126,7 +126,7 @@
             <IconButton
               id="edit"
               active={true}
-              click={(e) => {
+              on:click={(e) => {
                 editGroups = [...editGroups, group];
               }}
             />
@@ -155,7 +155,7 @@
     <IconButton
       id="add"
       active={true}
-      click={(e) => {
+      on:click={(e) => {
         dataset.tagGroups = [...dataset.tagGroups, { name: "Group", tags: "" }];
       }}
     />
