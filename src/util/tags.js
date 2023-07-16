@@ -1,5 +1,6 @@
 export const parseTags = (tagString) => {
-  return tagString.split(/[,;\s]+/).filter(t => t.length > 0)
+  // split by comma and semicolon, but not by space
+  return tagString.split(/[,;]+/).filter(t => t.length > 0)
 }
 
 export const toggleTagOnImage = (image, tag) => {
@@ -25,7 +26,7 @@ export const getImageDescription = (dataset, image) => {
     // if there is only one tag, return it
     if(tags.length === 1) return tags[0]
     // if there are multiple tags, return them comma separated
-    return tags.join(' and ')
+    return tags.join(' ')
   })
 
   // remove any double spaces

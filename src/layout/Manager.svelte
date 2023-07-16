@@ -19,7 +19,7 @@
 
 <div
   class="grid overflow-hidden h-screen divide-x divide-zinc-700"
-  style="grid-template-columns:250px 2fr 1fr 250px"
+  style="grid-template-columns:250px 2fr 1fr 400px"
 >
   <DataCol>
     {#if activeDataset !== undefined}
@@ -68,7 +68,7 @@
       <ImageEditor bind:dataset={activeDataset} bind:activeImage />
     {/if}
   </DataCol>
-  <DataCol>
+  <DataCol css=overflow-y-auto>
     {#if activeDataset !== undefined}
       <InputMultiBlock>
         <ExportEditor bind:dataset={activeDataset} bind:activeImage />

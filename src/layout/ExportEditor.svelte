@@ -21,6 +21,7 @@
   let exportStatus = "Export";
 </script>
 
+<div class=overflow-y-auto>
 <InputMultiBlock>
   <InputTextarea
     label={"Description String"}
@@ -161,3 +162,4 @@
     />
   </div>
 </InputMultiBlock>
+</div>
