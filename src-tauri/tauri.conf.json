@@ -39,7 +39,7 @@
     },
     "bundle": {
       "active": true,
-      "targets": "all",
+      "targets": "msi",
       "identifier": "com.idm.app",
       "icon": [
         "icons/32x32.png",
@@ -50,7 +50,7 @@
       ]
     },
     "security": {
-      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost; style-src 'self' 'unsafe-inline'"
     },
     "windows": [
       {

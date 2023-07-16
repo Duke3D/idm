@@ -50,7 +50,6 @@ async fn export_image(
     out_img.save(&export_path_buf).unwrap();
 
     // Generate text file path
-
     let txt_path = export_path_buf.with_extension("txt");
 
     // Write description to the text file

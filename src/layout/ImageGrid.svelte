@@ -127,7 +127,7 @@
           </tr>
         </thead>
         <tbody>
-          {#each images as img (img.path)}
+          {#each images as img, i (img.path)}
             <tr>
               <td>{i}</td>
               <td class="truncate" style='text-align:right;'><span>{img.path}</span></td>
