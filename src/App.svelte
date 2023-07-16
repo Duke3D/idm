@@ -1,13 +1,7 @@
 <script>
-  import Manager from './layout/Manager.svelte'
-  // import { writable } from 'svelte/store'
-
+  import Manager from "./layout/Manager.svelte";
 </script>
 
 <main class="font-sans">
-  <Manager/>
+  <Manager />
 </main>
-
-<style>
-
-</style>

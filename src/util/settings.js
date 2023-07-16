@@ -4,12 +4,14 @@ export const recentDatasets = writable([])
 export const gridImgWidth = writable(100)
 export const imgDisplayStyle = writable('grid')
 export const gridImgFilter = writable('')
+export const activeTab = writable('dataset')
 
 export const settings = {
   recentDatasets,
   gridImgWidth,
   gridImgFilter,
-  imgDisplayStyle
+  imgDisplayStyle,
+  activeTab
 }
 
 const registerSetting = (key, store) => {

@@ -1,15 +1,16 @@
 <script>
   import DataCol from "../components/DataCol.svelte";
   import Button from "../components/Button.svelte";
-  import DatasetEditor from "../layout/DatasetEditor.svelte";
+  import InputSourceEditor from "./InputSourceEditor.svelte";
   import ExportEditor from "../layout/ExportEditor.svelte";
   import ImageEditor from "../layout/ImageEditor.svelte";
   import ImageGrid from "../layout/ImageGrid.svelte";
-  import { recentDatasets } from "../util/settings.js";
+  import { recentDatasets, activeTab } from "../util/settings.js";
   import * as dataset from "../util/dataset.js";
   import InputSelect from "../components/inputs/InputSelect.svelte";
   import InputMultiBlock from "../components/inputs/InputMultiBlock.svelte";
   import InputWrap from "../components/inputs/InputWrap.svelte";
+    import TabBar from "../components/TabBar.svelte";
 
   let activeDataset;
   let datasetPath;
@@ -17,13 +18,15 @@
 
 </script>
 
+<TabBar bind:active={$activeTab} tabs={["Dataset", "Export", "Image"]} />
+
 <div
   class="grid overflow-hidden h-screen divide-x divide-zinc-700"
   style="grid-template-columns:250px 2fr 1fr 400px"
 >
   <DataCol>
     {#if activeDataset !== undefined}
-      <DatasetEditor bind:dataset={activeDataset} path={datasetPath} />
+      <InputSourceEditor bind:dataset={activeDataset} path={datasetPath} />
     {:else}
       <InputMultiBlock>
         <InputSelect
