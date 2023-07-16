@@ -12,6 +12,7 @@
   import IconButton from "../components/IconButton.svelte";
   import InputNumber from "../components/inputs/InputNumber.svelte";
   import { invoke } from "@tauri-apps/api/tauri";
+  import InputCheckbox from "../components/inputs/InputCheckbox.svelte";
   export let dataset = undefined;
   export let activeImage = undefined;
 
@@ -32,11 +33,14 @@
     <InputNumber label={"Out Width"} bind:value={dataset.exportWidth} />
     <InputNumber label={"Out Height"} bind:value={dataset.exportHeight} />
   </div>
-  <InputText
-    label={"Export Path"}
-    bind:value={dataset.exportPath}
-    path={"folder"}
-  />
+  <div>
+    <InputText
+      label={"Export Path"}
+      bind:value={dataset.exportPath}
+      path={"folder"}/>
+      <div class="mt-2"></div>
+    <InputCheckbox label="Clear Folder on Export" bind:value={dataset.exportClear}/>
+  </div>
   <div class="grid grid-cols-2 gap-2">
     <Button
       text={exportStatus}

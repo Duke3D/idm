@@ -15,7 +15,6 @@
   let datasetPath;
   let activeImage;
 
-
 </script>
 
 <div

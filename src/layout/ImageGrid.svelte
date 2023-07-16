@@ -110,7 +110,7 @@
       {#each images_filtered as img (img.path)}
         <img
           on:click={()=>{ activeImage = img }}
-          class="cursor-pointer rounded-md border {activeImage === img ? 'border-zinc-400' : 'border-zinc-900 hover:border-zinc-600'}"
+          class="cursor-pointer rounded-md border {!img.export ? 'opacity-30' : ''} {activeImage === img ? 'border-zinc-400' : 'border-zinc-900 hover:border-zinc-600'}"
           src={convertFileSrc(img.path)}
           alt={img.path}
           loading="lazy"

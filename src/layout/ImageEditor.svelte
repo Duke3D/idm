@@ -4,6 +4,8 @@
   import InputSelect from "../components/inputs/InputSelect.svelte";
   import { convertFileSrc } from "@tauri-apps/api/tauri";
   import { getImageDescription } from "../util/tags";
+  import IconButton from "../components/IconButton.svelte";
+    import InputCheckbox from "../components/inputs/InputCheckbox.svelte";
   export let activeImage;
   export let dataset;
 </script>
@@ -20,5 +22,10 @@
   <div class="text-xs text-zinc-300 break-all">
     {getImageDescription(dataset, activeImage)}
   </div>
+
+  <InputCheckbox label="Export" bind:value={activeImage.export}/>
   <div class="text-xs text-zinc-600 break-all">{activeImage.path}</div>
+
+
+
 </InputMultiBlock>

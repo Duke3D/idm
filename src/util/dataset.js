@@ -17,12 +17,14 @@ export const conform = (input) => {
     exportCropWidth  : 512,
     exportCropHeight : 512,
     exportPath       : '',
+    exportClear      : false,
     ...(input !== undefined ? input : {})
   }
   rescanImageFolders(result)
   // conform all image shapes
   result.images.forEach(i => {
     i.tags = i.tags || []
+    i.export = i.export !== undefined ? i.export : true
   })
   return result
 }
