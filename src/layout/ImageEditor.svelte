@@ -13,7 +13,7 @@
 <InputMultiBlock>
   <div>
     <img
-      class="rounded-md"
+      class="rounded-md w-full"
       src={convertFileSrc(activeImage.path)}
       alt={activeImage.path}
       loading="lazy"

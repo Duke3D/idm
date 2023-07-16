@@ -73,10 +73,11 @@
         disabled={selectedInputFolder == undefined}
       />
     </div>
-  </InputSelect>
+   </InputSelect>
+  
   <InputWrap>
     <Button
-      text={"Save Dataset"}
+      text={"Save Dataset (Ctrl + S)"}
       col={change ? "sky" : "zinc"}
       click={() => {
         datasetFun.save(path, dataset);
