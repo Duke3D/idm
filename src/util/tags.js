@@ -21,6 +21,10 @@ export const resolveTagId = (dataset, id) => {
   return dataset.tags.find(t => t.id === id)
 }
 
+export const resolveTagName = (dataset, name) => {
+  return dataset.tags.find(t => t.name === name)
+}
+
 export const getGroupTagData = (group, dataset) => {
   return group.tags.map(id => resolveTagId(dataset, id))
 }

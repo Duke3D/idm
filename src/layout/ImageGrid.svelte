@@ -8,6 +8,7 @@
   import { onMount, onDestroy } from "svelte";
   import IconButton from "../components/IconButton.svelte";
   import InputText from "../components/inputs/InputText.svelte";
+  import * as tagFun from "../util/tags.js";
   export let images;
   export let dataset;
   export let activeImage;
@@ -25,19 +26,23 @@
       // Filter for path, tags ("tag", !"tag"), or tag counts ({group}>2, {any}<1)
       if (fil.match(/^".*"$/)) {
         // "tag" - must have tag
-        const tag = fil.replace(/"/g, "");
-        i = i.filter((img) => img.tags.includes(tag));
+        const tag = tagFun.resolveTagName(dataset, fil.replace(/"/g, ""));
+        if (tag) i = i.filter((img) => img.tags.indexOf(tag.id) >= 0);
       } else if (fil.match(/^!"[^"]*"$/)) {
         // !"tag" - must not have tag
-        const tag = fil.replace(/^!"(.*)"$/, "$1");
-        i = i.filter((img) => !img.tags.includes(tag));
+        const tag = tagFun.resolveTagName(
+          dataset,
+          fil.replace(/^!"(.*)"$/, "$1")
+        );
+        if (tag) i = i.filter((img) => img.tags.indexOf(tag.id) < 0);
       } else if (fil.match(/{.*}>[0-9]+/)) {
         // {group}>2 - must have more than 2 tags
         const [group, count] = fil.replace(/[{}]/g, "").split(">");
         const tags = dataset.tagGroups.find((g) => g.name == group)?.tags;
         if (tags)
           i = i.filter(
-            (img) => img.tags.filter((tag) => tags.includes(tag)).length > count
+            (img) =>
+              img.tags.filter((tag) => tags.indexOf(tag) >= 0).length > count
           );
         else if (group == "any") i = i.filter((img) => img.tags.length > count);
       } else if (fil.match(/{.*}<[0-9]+/)) {
@@ -46,7 +51,8 @@
         const tags = dataset.tagGroups.find((g) => g.name == group)?.tags;
         if (tags)
           i = i.filter(
-            (img) => img.tags.filter((tag) => tags.includes(tag)).length < count
+            (img) =>
+              img.tags.filter((tag) => tags.indexOf(tag) >= 0).length < count
           );
         else if (group == "any") i = i.filter((img) => img.tags.length < count);
       } else {
