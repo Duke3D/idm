@@ -9,8 +9,12 @@
 </script>
 
 <InputWrap {label}>
-  <div class="grid gap-1" style="grid-template-columns: 1fr {path?"auto":""};">
+  <div
+    class="grid gap-1"
+    style="grid-template-columns: 1fr {path ? 'auto' : ''};"
+  >
     <input
+      autocomplete="off"
       {placeholder}
       id="wrapped"
       bind:value
@@ -19,14 +23,14 @@
     />
     {#if path}
       <IconButton
-        id={path==="folder" ? "folder_open" : "file_open"}
+        id={path === "folder" ? "folder_open" : "file_open"}
         active={true}
         on:click={async (e) => {
           const result = await open({
             directory: true,
             multiple: false,
-          })
-          if(result) value = result
+          });
+          if (result) value = result;
         }}
       />
     {/if}

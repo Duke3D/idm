@@ -72,7 +72,7 @@
   };
 
   const keyDown = (e) => {
-    if (activeImages.length > 0) return;
+    if (activeImages.length > 1) return;
     // arrow key up and down to navigate to next, previous image
     if (e.key === "ArrowUp") {
       e.preventDefault();

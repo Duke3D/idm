@@ -24,13 +24,13 @@
     
     if(count === 0) {
       // if no images have the tag
-      css += 'bg-zinc-800 text-zinc-400 border border-zinc-900'
+      css += 'bg-zinc-700 text-zinc-400 border border-zinc-800'
     } else if(count === activeImages.length) {
       // if all images have the tag
-      css += 'bg-zinc-500 text-zinc-300 border border-zinc-200'
+      css += 'bg-zinc-500 text-zinc-200 border border-zinc-200'
     } else {
       // if some images have the tag
-      css += 'bg-zinc-700 text-zinc-400 border border-zinc-600'
+      css += 'bg-zinc-700 text-zinc-400 border border-zinc-300'
     }
     
     return css
