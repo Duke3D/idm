@@ -59,6 +59,7 @@ export const rescanImageFolders = async (dataset) => {
   // conform all image shapes
   dataset.images.forEach(i => {
     i.tags = i.tags || []
+    i.custom = (i.custom !== undefined) ? i.custom : ''
     i.export = (i.export !== undefined) ? i.export : true
 
     // sanitize tags, ensure they are all unique, integers and found in dataset.tags
@@ -71,14 +72,20 @@ export const getImageDescription = (dataset, image) => {
   // take dataset.description, which is constructed like "some description {tag1} more description {tag2}"
   // use regex replace to look up every tag group in the string, defined by curly braces
   let result = dataset.descriptionString.replace(/{([^}]+)}/g, (match, name) => {
-    const tagGroup = dataset.tagGroups.find(g => g.name === name)
+
+    name = name.toLowerCase()
+
+    // exception for custom tag
+    if(name === 'custom') return image.custom
+
+    const tagGroup = dataset.tagGroups.find(g => g.name.toLowerCase() === name)
     if (!tagGroup) return 'ERROR'
     // figure out which tags from this group the image has in its .tags array
     const tags = image.tags.filter(t => tagGroup.tags.indexOf(t) >= 0)
     // if there are no tags, return an empty string
     if (tags.length === 0) return ''
     // if there are multiple tags, return them with spaces
-    return tags.map(t => tagFun.resolveTagId(dataset, t).name).join(tagGroup.joinString)
+    return tagGroup.prefix + tags.map(t => tagFun.resolveTagId(dataset, t).name).join(tagGroup.join) + tagGroup.suffix
   })
 
   // remove any double spaces

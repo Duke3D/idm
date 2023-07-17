@@ -55,7 +55,7 @@ export const createTag = (group, dataset) => {
 export const removeTag = (tag, dataset) => {
 
   // remove from dataset tags array
-  dataset.tags = dataset.tags.filter(t => t !== tag)
+  dataset.tags = dataset.tags.filter(t => t.id !== tag.id)
   // remove from all groups arrays id referecing it
   dataset.tagGroups.forEach(g => {
     g.tags = g.tags.filter(t => t !== tag.id)

@@ -23,6 +23,11 @@
     {getImageDescription(dataset, activeImage)}
   </div>
 
+  <InputText
+    label="Custom"
+    placeholder={"{custom} interpolated string"}
+    bind:value={activeImage.custom}/>
+
   <InputCheckbox
     label="Export"
     bind:value={activeImage.export}

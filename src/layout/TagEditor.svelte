@@ -1,4 +1,6 @@
 <script>
+  // @ts-nocheck
+
   import Button from "../components/Button.svelte";
   import IconButton from "../components/IconButton.svelte";
   import InputMultiBlock from "../components/inputs/InputMultiBlock.svelte";
@@ -35,25 +37,46 @@
 
     return css;
   };
+
+  const forceUpdate = (key, val) => {
+    // an ugly fix that makes the join string update globally
+    if (editGroup[key] !== val) {
+      editGroup[key] = val;
+      dataset = dataset;
+    }
+  };
 </script>
 
 <InputTextarea
-  label={"Description String"}
+  label={"Description Template String"}
   bind:value={dataset.descriptionString}
+  placeholder={"Template string for image description, containing {groupNames} or {custom}"}
 />
 {#if editGroup !== undefined}
   <div class="grid grid-cols-2 gap-2">
     <InputText label={"Group Name"} bind:value={editGroup.name} />
     <InputText
       label={"Join String"}
-      bind:value={editGroup.joinString}
+      placeholder={"' ' or ', ' etc."}
+      bind:value={editGroup.join}
       on:input={(e) => {
-        // an ugly fix that makes the join string update globally
-        if (editGroup.joinString !== e.target.value) {
-          editGroup.joinString = e.target.value;
-          dataset = dataset;
-          console.log("force")
-        }
+        forceUpdate("join", e.target.value);
+      }}
+    />
+    <InputText
+      label={"Prefix"}
+      placeholder={"e.g. 'With a'"}
+      bind:value={editGroup.prefix}
+      on:input={(e) => {
+        forceUpdate("prefix", e.target.value);
+      }}
+    />
+    <InputText
+      label={"Suffix"}
+      placeholder={"e.g. ' hilt.'"}
+      bind:value={editGroup.suffix}
+      on:input={(e) => {
+        forceUpdate("suffix", e.target.value);
       }}
     />
   </div>

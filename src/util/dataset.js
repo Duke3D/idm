@@ -12,7 +12,7 @@ export const conform = (input) => {
     inputFolders          : [],
     tagGroups             : [],
     tags                  : [],
-    descriptionString     : '',
+    descriptionString     : '{custom}',
     exportWidth           : 512,
     exportHeight          : 512,
     exportCropModulo      : false,
@@ -27,7 +27,9 @@ export const conform = (input) => {
 
   // validate groups
   result.tagGroups.forEach(g => {
-    g.joinString = g.joinString || ' '
+    g.join = g.join || ' '
+    g.prefix = g.prefix || ' '
+    g.suffix = g.suffix || ' '
   })
 
   rescanImageFolders(result)
