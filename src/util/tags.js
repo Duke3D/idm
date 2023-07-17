@@ -9,6 +9,21 @@ export const toggleTagIdOnImage = (image, id) => {
   return image
 }
 
+export const enableTagIdOnImage = (image, id) => {
+  if (image.tags.indexOf(id) < 0) {
+    image.tags.push(id)
+  }
+  return image
+}
+
+export const disableTagIdOnImage = (image, id) => {
+  const ind = image.tags.indexOf(id)
+  if (ind >= 0) {
+    image.tags.splice(ind, 1)
+  }
+  return image
+}
+
 export const removeTagGroup = (group, dataset) => {
   dataset.tagGroups = dataset.tagGroups.filter(g => g !== group)
 }

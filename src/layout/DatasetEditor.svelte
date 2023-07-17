@@ -3,6 +3,7 @@
   import InputSourceEditor from "./InputSourceEditor.svelte";
   import ExportEditor from "./ExportEditor.svelte";
   import ImageEditor from "./ImageEditor.svelte";
+  import ImageMultiEditor from "./ImageMultiEditor.svelte";
   import ImageGrid from "./ImageGrid.svelte";
   import { activeTab } from "../util/settings.js";
   import InputMultiBlock from "../components/inputs/InputMultiBlock.svelte";
@@ -13,7 +14,7 @@
 
   export let datasetPath;
   export let activeDataset;
-  let activeImage;
+  let activeImages = [];
 
   let serializedDataset = JSON.stringify(activeDataset);
   $: hasChanges = hasChanges || serializedDataset !== JSON.stringify(activeDataset);
@@ -58,17 +59,22 @@
         <ImageGrid
           bind:dataset={activeDataset}
           images={activeDataset.images}
-          bind:activeImage
+          bind:activeImages
         />
       </DataCol>
       <DataCol>
-        {#if activeImage !== undefined}
-          <ImageEditor bind:dataset={activeDataset} bind:activeImage />
+        {#if activeImages.length > 1}
+        <ImageMultiEditor bind:dataset={activeDataset} bind:activeImages={activeImages} />
+        {:else if activeImages.length === 1}
+        <ImageEditor bind:dataset={activeDataset} bind:activeImage={activeImages[0]} />
+        {:else}
+        <span class="text-xs text-zinc-500 leading">Select an image by clicking on it, or using arrow keys. Shift + Click to select and edit multiple images.</span>
         {/if}
+
       </DataCol>
       <DataCol css="overflow-y-auto">
         <InputMultiBlock>
-          <TagEditor bind:dataset={activeDataset} bind:activeImage />
+          <TagEditor bind:dataset={activeDataset} bind:activeImages />
         </InputMultiBlock>
       </DataCol>
     </div>

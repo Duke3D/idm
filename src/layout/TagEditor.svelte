@@ -8,9 +8,15 @@
   import * as tagFun from "../util/tags";
 
   export let dataset;
-  export let activeImage = undefined;
+  export let activeImages = undefined;
   let editGroup;
   $: editTags = editGroup && tagFun.getGroupTagData(editGroup, dataset);
+
+  const imgWithTagCount = (id) => {
+    // count how many images have the tag id
+    return activeImages.filter((image) => image.tags.indexOf(id) >= 0)
+      .length;
+  };
 </script>
 
 <InputTextarea
@@ -30,7 +36,7 @@
           dataset = dataset;
         }}
         deleteFun={(tag) => {
-          tagFun.removeTag(tag, dataset)
+          tagFun.removeTag(tag, dataset);
           dataset = dataset;
         }}
       />
@@ -59,7 +65,6 @@
           <IconButton
             css={"text-sm"}
             id="edit"
-
             on:click={(e) => {
               editGroup = group;
             }}
@@ -69,14 +74,20 @@
 
       {#each group.tags as tagId}
         <button
-          class="{activeImage?.tags.indexOf(tagId) >= 0
+          class="{imgWithTagCount(tagId) >= 0
             ? 'bg-zinc-500 text-zinc-200 border'
             : 'bg-zinc-700 text-zinc-400 border border-zinc-800'} focus-visible:outline-none text-xs font-bold shadow-md rounded-md px-2 mr-1 mb-0.5"
           on:click={(e) => {
-            if (activeImage) {
-              activeImage = tagFun.toggleTagIdOnImage(activeImage, tagId);
-              dataset = dataset;
+            if (imgWithTagCount(tagId) === 0) {
+              activeImages.forEach((img) =>
+                tagFun.enableTagIdOnImage(img, tagId)
+              );
+            } else {
+              activeImages.forEach((img) =>
+                tagFun.disableTagIdOnImage(img, tagId)
+              );
             }
+            dataset = dataset;
           }}
         >
           {tagFun.resolveTagId(dataset, tagId).name}

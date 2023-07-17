@@ -11,7 +11,7 @@
   import * as tagFun from "../util/tags.js";
   export let images;
   export let dataset;
-  export let activeImage;
+  export let activeImages;
 
   // image grid style
   $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr));`;
@@ -72,18 +72,19 @@
   };
 
   const keyDown = (e) => {
+    if (activeImages.length > 0) return;
     // arrow key up and down to navigate to next, previous image
     if (e.key === "ArrowUp") {
       e.preventDefault();
-      const index = visibleImages.findIndex((img) => img === activeImage);
+      const index = visibleImages.findIndex((img) => img === activeImages[0]);
       if (index > 0) {
-        activeImage = visibleImages[index - 1];
+        activeImages[0] = visibleImages[index - 1];
       }
     } else if (e.key === "ArrowDown") {
       e.preventDefault();
-      const index = visibleImages.findIndex((img) => img === activeImage);
+      const index = visibleImages.findIndex((img) => img === activeImages[0]);
       if (index < visibleImages.length - 1) {
-        activeImage = visibleImages[index + 1];
+        activeImages[0] = visibleImages[index + 1];
       }
     }
   };
@@ -130,12 +131,24 @@
       {#each visibleImages as img (img.path)}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <img
-          on:click={() => {
-            activeImage = img;
+          on:click={(e) => {
+            // if pressed shift, add to active images
+            if (e.shiftKey) {
+              if (activeImages.indexOf(img) < 0) {
+                activeImages.push(img)
+                activeImages = activeImages
+              }
+            } else {
+              if (activeImages.length === 1 && activeImages[0] === img) {
+                activeImages = []
+              } else {
+                activeImages = [img]
+              }
+            }
           }}
           class="cursor-pointer rounded-md drop-shadow-md border border-zinc-900 {!img.export
             ? 'opacity-30 grayscale brightness-50'
-            : ''} {activeImage === img
+            : ''} {activeImages.indexOf(img) >= 0
             ? 'outline outline-zinc-400'
             : 'hover:border-zinc-500'}"
           src={convertFileSrc(img.path)}
