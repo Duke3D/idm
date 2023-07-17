@@ -11,6 +11,7 @@
 </script>
 
 <InputMultiBlock>
+  <span class="text-sm text-zinc-400">Editing {activeImages.length} images.</span>
   <!-- <div>
     <img
       class="rounded-md w-full"

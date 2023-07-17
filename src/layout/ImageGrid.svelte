@@ -135,9 +135,9 @@
             // if pressed shift, add to active images
             if (e.shiftKey) {
               if (activeImages.indexOf(img) < 0) {
-                activeImages.push(img)
-                activeImages = activeImages
-              }
+                activeImages = [...activeImages, img]
+              } else {
+                activeImages = activeImages.filter((i) => i !== img)}
             } else {
               if (activeImages.length === 1 && activeImages[0] === img) {
                 activeImages = []
@@ -149,7 +149,7 @@
           class="cursor-pointer rounded-md drop-shadow-md border border-zinc-900 {!img.export
             ? 'opacity-30 grayscale brightness-50'
             : ''} {activeImages.indexOf(img) >= 0
-            ? 'outline outline-zinc-400'
+            ? 'outline outline-zinc-300'
             : 'hover:border-zinc-500'}"
           src={convertFileSrc(img.path)}
           alt={img.path}

@@ -17,6 +17,24 @@
     return activeImages.filter((image) => image.tags.indexOf(id) >= 0)
       .length;
   };
+
+  const resolveTagCss = (tagId, activeImages) => {
+    let css = "focus-visible:outline-none text-xs font-bold shadow-md rounded-md px-2 mr-1 mb-0.5 "
+    let count = imgWithTagCount(tagId)
+    
+    if(count === 0) {
+      // if no images have the tag
+      css += 'bg-zinc-800 text-zinc-400 border border-zinc-900'
+    } else if(count === activeImages.length) {
+      // if all images have the tag
+      css += 'bg-zinc-400 text-zinc-700 border border-zinc-200'
+    } else {
+      // if some images have the tag
+      css += 'bg-zinc-700 text-zinc-300 border border-zinc-500'
+    }
+    
+    return css
+  }
 </script>
 
 <InputTextarea
@@ -74,9 +92,7 @@
 
       {#each group.tags as tagId}
         <button
-          class="{imgWithTagCount(tagId) >= 0
-            ? 'bg-zinc-500 text-zinc-200 border'
-            : 'bg-zinc-700 text-zinc-400 border border-zinc-800'} focus-visible:outline-none text-xs font-bold shadow-md rounded-md px-2 mr-1 mb-0.5"
+          class="{resolveTagCss(tagId, activeImages)}"
           on:click={(e) => {
             if (imgWithTagCount(tagId) === 0) {
               activeImages.forEach((img) =>
