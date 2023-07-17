@@ -4,11 +4,7 @@
   import InputText from "../components/inputs/InputText.svelte";
   import InputSelect from "../components/inputs/InputSelect.svelte";
   import Button from "../components/Button.svelte";
-  import {
-    parseTags,
-    toggleTagOnImage,
-    getImageDescription,
-  } from "../util/tags";
+  import { getImageDescription } from "../util/tags";
   import IconButton from "../components/IconButton.svelte";
   import InputNumber from "../components/inputs/InputNumber.svelte";
   import { invoke } from "@tauri-apps/api/tauri";
@@ -40,10 +36,7 @@
       {/if}
     </div>
     <div class="grid grid-cols-2 gap-2">
-      <InputNumber
-        label={"Crop Width"}
-        bind:value={dataset.exportCropWidth}
-      />
+      <InputNumber label={"Crop Width"} bind:value={dataset.exportCropWidth} />
       <InputNumber
         label={"Crop Height"}
         bind:value={dataset.exportCropHeight}
@@ -91,8 +84,12 @@
               description: getImageDescription(dataset, img),
               width: dataset.exportWidth,
               height: dataset.exportHeight,
-              cropmodulowidth: dataset.exportCropModulo ? dataset.exportCropModuloWidth : dataset.exportCropWidth,
-              cropmoduloheight: dataset.exportCropModulo ? dataset.exportCropModuloHeight : dataset.exportCropHeight,
+              cropmodulowidth: dataset.exportCropModulo
+                ? dataset.exportCropModuloWidth
+                : dataset.exportCropWidth,
+              cropmoduloheight: dataset.exportCropModulo
+                ? dataset.exportCropModuloHeight
+                : dataset.exportCropHeight,
               cropwidth: dataset.exportCropWidth,
               cropheight: dataset.exportCropHeight,
             }).then(() => (exportStatus = `Exporting: ${++done}/${max}`));

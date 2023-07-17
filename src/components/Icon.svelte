@@ -1,5 +1,6 @@
 <script>
   export let id = ""
+  export let css = "text-md"
 </script>
 
-<span class="material-symbols-outlined">{id}</span>
+<span class="{css} material-symbols-outlined">{id}</span>

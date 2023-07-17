@@ -53,10 +53,12 @@ export const rescanImageFolders = async (dataset) => {
   }
 
   // remove all unseen images
-  dataset.images = dataset.images.filter(i => {
-    const wasSeen = seen.has(i)
-    if(!wasSeen) console.log('removing unseen image: '+i.path)
-    return wasSeen
+  dataset.images = dataset.images.filter(i => seen.has(i))
+
+  // conform all image shapes
+  dataset.images.forEach(i => {
+    i.tags = i.tags || []
+    i.export = (i.export !== undefined) ? i.export : true
   })
 
 }

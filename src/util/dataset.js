@@ -11,6 +11,7 @@ export const conform = (input) => {
     images                : [],
     inputFolders          : [],
     tagGroups             : [],
+    tags                  : [],
     descriptionString     : '',
     exportWidth           : 512,
     exportHeight          : 512,
@@ -24,11 +25,7 @@ export const conform = (input) => {
     ...(input !== undefined ? input : {})
   }
   rescanImageFolders(result)
-  // conform all image shapes
-  result.images.forEach(i => {
-    i.tags = i.tags || []
-    i.export = i.export !== undefined ? i.export : true
-  })
+
   return result
 }
 
