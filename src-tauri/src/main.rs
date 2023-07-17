@@ -5,7 +5,7 @@ use image::{imageops, GenericImageView, ImageBuffer};
 use open;
 
 // use rand::{rngs::StdRng, Rng, SeedableRng};
-use std::path::{PathBuf};
+use std::path::PathBuf;
 use tokio::fs;
 
 #[tauri::command]
@@ -16,6 +16,8 @@ async fn export_image(
     height: u32,
     cropwidth: u32,
     cropheight: u32,
+    cropmodulowidth: u32,
+    cropmoduloheight: u32,
     description: String,
 ) {
     // load image, resize if necessary
@@ -33,27 +35,49 @@ async fn export_image(
     // let x_offset: u32 = rng.gen_range(0..img_width);
     // let y_offset: u32 = rng.gen_range(0..img_height);
 
-    for x in 0..cropwidth {
-        for y in 0..cropheight {
-            // Use modulo operation to create tiling effect if bigger than crop area
-            // let px = img.get_pixel((x + x_offset) % img_width, (y + y_offset) % img_height);
-            let px = img.get_pixel(x % img_width, y % img_height);
-            out_img.put_pixel(x, y, px);
-        }
-    }
-
-    let out_img = imageops::resize(&out_img, width, height, imageops::FilterType::Lanczos3);
-    // resized.save(export_path).unwrap();
-
+    
+      // println!("widht: {}, height: {}, cropwidth: {}, cropheight: {}, cropmodulowidth: {}, cropmoduloheight: {}", img_width, img_height, cropwidth, cropheight, cropmodulowidth, cropmoduloheight);
     // write the image file
     let export_path_buf = PathBuf::from(export_path);
-    out_img.save(&export_path_buf).unwrap();
+    let base_file_name = export_path_buf.file_name().unwrap().to_str().unwrap();
+    let base_path_buf = export_path_buf.with_file_name(base_file_name);
+    let base_file_stem = base_path_buf.file_stem().unwrap().to_str().unwrap();
+    let extension = base_path_buf.extension().unwrap().to_str().unwrap();
 
-    // Generate text file path
-    let txt_path = export_path_buf.with_extension("txt");
+    let mut n = 0;
+    let mut cx = 0;
+    while cx < cropmodulowidth {
+        let mut cy = 0;
+        while cy < cropmoduloheight {
+            for x in 0..cropwidth {
+                for y in 0..cropheight {
+                    // Use modulo operation to create tiling effect if bigger than crop area
+                    // let px = img.get_pixel((x + x_offset) % img_width, (y + y_offset) % img_height);
+                    let px = img.get_pixel((cx + x) % img_width, (cy + y) % img_height);
+                    out_img.put_pixel(x, y, px);
+                }
+            }
 
-    // Write description to the text file
-    let _ = fs::write(txt_path, description).await;
+            let out_img = imageops::resize(&out_img, width, height, imageops::FilterType::Lanczos3);
+
+            // add n to path buff
+            let new_filename = format!("{}-{}.{}", base_file_stem, n, extension);
+            let new_path_buf = export_path_buf.with_file_name(new_filename);
+            
+            // println!("New path: {:?}", new_path_buf);
+            out_img.save(&new_path_buf).unwrap();
+
+            // Generate text file path
+            let txt_path = new_path_buf.with_extension("txt");
+            let desc = description.clone();
+            // Write description to the text file
+            let _ = fs::write(txt_path, desc).await;
+
+            n += 1;
+            cy += cropheight;
+        }
+        cx += cropwidth;
+    }
 }
 
 #[tauri::command]

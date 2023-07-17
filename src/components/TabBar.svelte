@@ -16,5 +16,9 @@
       {tab}
     </div>
   {/each}
-  <div class="flex-grow border-b border-zinc-700"></div>
+  <div class="flex-grow border-b pl-2 border-zinc-700">
+    <slot>
+
+    </slot>
+  </div>
 </div>

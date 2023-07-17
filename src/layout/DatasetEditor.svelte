@@ -1,6 +1,5 @@
 <script>
   import DataCol from "../components/DataCol.svelte";
-  import Button from "../components/Button.svelte";
   import InputSourceEditor from "./InputSourceEditor.svelte";
   import ExportEditor from "./ExportEditor.svelte";
   import ImageEditor from "./ImageEditor.svelte";
@@ -9,14 +8,42 @@
   import InputMultiBlock from "../components/inputs/InputMultiBlock.svelte";
   import TabBar from "../components/TabBar.svelte";
   import TagEditor from "./TagEditor.svelte";
+  import { onMount, onDestroy } from "svelte";
+  import * as datasetFun from "../util/dataset.js";
 
   export let datasetPath;
   export let activeDataset;
   let activeImage;
+
+  let serializedDataset = JSON.stringify(activeDataset);
+  $: hasChanges = hasChanges || serializedDataset !== JSON.stringify(activeDataset);
+
+  const keyDown = (e) => {
+    // ctrl + s, only if down
+    if (e.ctrlKey && e.key === "s") {
+      e.preventDefault()
+      datasetFun.save(datasetPath, activeDataset);
+      serializedDataset = JSON.stringify(activeDataset);
+      hasChanges = false;
+    }
+  };
+
+  onMount(() => {
+    window.addEventListener("keydown", keyDown);
+  });
+
+  onDestroy(() => {
+    window.removeEventListener("keydown", keyDown);
+  });
+
 </script>
 
 <div class="grid h-screen" style="grid-template-rows: auto 1fr;">
-  <TabBar bind:active={$activeTab} tabs={["Dataset", "Images", "Export"]} />
+  <TabBar bind:active={$activeTab} tabs={["Dataset", "Images", "Export"]}>
+    {#if hasChanges}
+    <span class="text-sm text-zinc-400 animate-pulse">Unsaved changes! (Ctrl + S)</span>
+    {/if}
+  </TabBar>
 
   {#if $activeTab === "Dataset"}
     <DataCol css="overflow-y-auto  max-w-lg">
@@ -48,7 +75,7 @@
   {:else if $activeTab === "Export"}
     <DataCol css="overflow-y-auto  max-w-lg">
       <InputMultiBlock>
-        <ExportEditor bind:dataset={activeDataset} bind:activeImage />
+        <ExportEditor bind:dataset={activeDataset} />
       </InputMultiBlock>
     </DataCol>
   {/if}

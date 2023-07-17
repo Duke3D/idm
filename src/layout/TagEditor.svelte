@@ -11,9 +11,9 @@
   let editGroups = [];
 </script>
 <InputTextarea
-label={"Description String"}
-bind:value={dataset.descriptionString}
-/>
+  label={"Description String"}
+  bind:value={dataset.descriptionString}
+  />
 {#each dataset.tagGroups as group, i}
 <InputMultiBlock dense={true}>
 
@@ -62,6 +62,7 @@ bind:value={dataset.descriptionString}
         on:click={(e) => {
           if (activeImage) {
             activeImage = toggleTagOnImage(activeImage, tag);
+            dataset = dataset
           }
         }}
       >

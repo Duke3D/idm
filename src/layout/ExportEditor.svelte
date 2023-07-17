@@ -15,18 +15,37 @@
   import { createDir, removeDir } from "@tauri-apps/api/fs";
   import InputCheckbox from "../components/inputs/InputCheckbox.svelte";
   export let dataset = undefined;
-  export let activeImage = undefined;
-
 
   let exportStatus = "Export";
 </script>
 
-<div class=overflow-y-auto>
+<div class="overflow-y-auto">
   <InputMultiBlock>
+    <div>
+      <InputCheckbox
+        label="Use Crop Modulo"
+        bind:value={dataset.exportCropModulo}
+      />
+      {#if dataset.exportCropModulo}
+        <div class="grid grid-cols-2 gap-2 mt-1">
+          <InputNumber
+            label={"Crop Modulo Width"}
+            bind:value={dataset.exportCropModuloWidth}
+          />
+          <InputNumber
+            label={"Crop Modulo Height"}
+            bind:value={dataset.exportCropModuloHeight}
+          />
+        </div>
+      {/if}
+    </div>
     <div class="grid grid-cols-2 gap-2">
-      <InputNumber label={"Precrop Width"} bind:value={dataset.exportCropWidth} />
       <InputNumber
-        label={"Precrop Height"}
+        label={"Crop Width"}
+        bind:value={dataset.exportCropWidth}
+      />
+      <InputNumber
+        label={"Crop Height"}
         bind:value={dataset.exportCropHeight}
       />
     </div>
@@ -42,7 +61,7 @@
       />
       <div class="mt-2" />
       <InputCheckbox
-        label="Clear target folder on export"
+        label="Clear target folder before export"
         bind:value={dataset.exportClear}
       />
     </div>
@@ -53,12 +72,13 @@
         click={async () => {
           if (dataset.exportClear) {
             try {
-              await createDir(dataset.exportPath, { recursive: true });
+              await removeDir(dataset.exportPath, { recursive: true });
             } catch (e) {}
           }
           await createDir(dataset.exportPath, { recursive: true });
           const filtered = dataset.images.filter((img) => img.export);
-          let done = 0, max = filtered.length;
+          let done = 0,
+            max = filtered.length;
           exportStatus = `Exporting: 0/${max}`;
           let tasks = filtered.map((img, i) => {
             return invoke("export_image", {
@@ -71,13 +91,14 @@
               description: getImageDescription(dataset, img),
               width: dataset.exportWidth,
               height: dataset.exportHeight,
+              cropmodulowidth: dataset.exportCropModulo ? dataset.exportCropModuloWidth : dataset.exportCropWidth,
+              cropmoduloheight: dataset.exportCropModulo ? dataset.exportCropModuloHeight : dataset.exportCropHeight,
               cropwidth: dataset.exportCropWidth,
               cropheight: dataset.exportCropHeight,
             }).then(() => (exportStatus = `Exporting: ${++done}/${max}`));
           });
 
           Promise.all(tasks).then(() => {
-            console.log("done!")
             exportStatus = `Done: ${max}/${max}`;
           });
         }}
