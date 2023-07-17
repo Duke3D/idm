@@ -78,7 +78,7 @@ export const getImageDescription = (dataset, image) => {
     // if there are no tags, return an empty string
     if (tags.length === 0) return ''
     // if there are multiple tags, return them with spaces
-    return tags.map(t => tagFun.resolveTagId(dataset, t).name).join(' ')
+    return tags.map(t => tagFun.resolveTagId(dataset, t).name).join(tagGroup.joinString)
   })
 
   // remove any double spaces

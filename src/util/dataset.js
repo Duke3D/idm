@@ -24,6 +24,12 @@ export const conform = (input) => {
     exportClear           : false,
     ...(input !== undefined ? input : {})
   }
+
+  // validate groups
+  result.tagGroups.forEach(g => {
+    g.joinString = g.joinString || ' '
+  })
+
   rescanImageFolders(result)
 
   return result

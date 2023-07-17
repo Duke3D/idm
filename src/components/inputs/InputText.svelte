@@ -14,6 +14,7 @@
     style="grid-template-columns: 1fr {path ? 'auto' : ''};"
   >
     <input
+      on:input
       autocomplete="off"
       {placeholder}
       id="wrapped"
