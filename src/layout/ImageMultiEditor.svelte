@@ -11,7 +11,7 @@
 </script>
 
 <InputMultiBlock>
-  <span class="text-sm text-zinc-400">Editing {activeImages.length} images.</span>
+  <span class="text-xs text-yellow-400/75">Editing {activeImages.length} images. Clicking tags will toggle them for all selected images.</span>
   <!-- <div>
     <img
       class="rounded-md w-full"
