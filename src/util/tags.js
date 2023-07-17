@@ -29,7 +29,7 @@ export const removeTagGroup = (group, dataset) => {
 }
 
 export const createTagGroup = (dataset) => {
-  dataset.tagGroups = [...dataset.tagGroups, { name: 'Name', tags: [] }]
+  dataset.tagGroups = [...dataset.tagGroups, { name: 'Name', tags: [], join: ' ', prefix: '', suffix: '' }]
 }
 
 export const resolveTagId = (dataset, id) => {
