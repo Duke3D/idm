@@ -4,7 +4,7 @@
   import InputText from "../components/inputs/InputText.svelte";
   import InputSelect from "../components/inputs/InputSelect.svelte";
   import Button from "../components/Button.svelte";
-  import { getImageDescription } from "../util/tags";
+  import { getImageDescription } from "../util/images.js";
   import IconButton from "../components/IconButton.svelte";
   import InputNumber from "../components/inputs/InputNumber.svelte";
   import { invoke } from "@tauri-apps/api/tauri";

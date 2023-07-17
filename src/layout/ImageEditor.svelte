@@ -3,7 +3,7 @@
   import InputText from "../components/inputs/InputText.svelte";
   import InputSelect from "../components/inputs/InputSelect.svelte";
   import { convertFileSrc } from "@tauri-apps/api/tauri";
-  import { getImageDescription } from "../util/tags";
+  import { getImageDescription } from "../util/images";
   import IconButton from "../components/IconButton.svelte";
   import InputCheckbox from "../components/inputs/InputCheckbox.svelte";
   export let activeImage;

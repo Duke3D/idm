@@ -67,19 +67,19 @@
         </span>
       </span>
 
-      {#each group.tags as tag}
+      {#each group.tags as tagId}
         <button
-          class="{activeImage?.tags.indexOf(tag.id) >= 0
+          class="{activeImage?.tags.indexOf(tagId) >= 0
             ? 'bg-zinc-500 text-zinc-200 border'
             : 'bg-zinc-700 text-zinc-400 border border-zinc-800'} focus-visible:outline-none text-xs font-bold shadow-md rounded-md px-2 mr-1 mb-0.5"
           on:click={(e) => {
             if (activeImage) {
-              activeImage = tagFun.toggleTagIdOnImage(activeImage, tag.id);
+              activeImage = tagFun.toggleTagIdOnImage(activeImage, tagId);
               dataset = dataset;
             }
           }}
         >
-          {tagFun.resolveTagId(dataset, tag).name}
+          {tagFun.resolveTagId(dataset, tagId).name}
         </button>
       {/each}
     {/if}
