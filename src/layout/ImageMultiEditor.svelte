@@ -6,12 +6,11 @@
   import { getImageDescription } from "../util/images";
   import IconButton from "../components/IconButton.svelte";
   import InputCheckbox from "../components/inputs/InputCheckbox.svelte";
-    import Button from "../components/Button.svelte";
+  import Button from "../components/Button.svelte";
   export let activeImages;
   export let dataset;
 
-  let exportAll = activeImages.every((img) => img.export)
-
+  let exportAll = activeImages.every((img) => img.export);
 </script>
 
 <InputMultiBlock>
@@ -45,8 +44,8 @@
     on:change={(e) => {
       activeImages.forEach((img) => {
         img.export = exportAll;
-      })
-      activeImages = activeImages
+      });
+      activeImages = activeImages;
     }}
   />
 </InputMultiBlock>

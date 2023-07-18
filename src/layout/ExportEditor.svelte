@@ -18,34 +18,37 @@
 <div class="overflow-y-auto">
   <InputMultiBlock>
     <div>
-      <InputCheckbox
-        label="Use Crop Modulo"
-        bind:value={dataset.exportCropModulo}
-      />
-      {#if dataset.exportCropModulo}
-        <div class="grid grid-cols-2 gap-2 mt-1">
+      <InputCheckbox label="Center crop" bind:value={dataset.exportCrop} />
+      {#if dataset.exportCrop}
+        <div class="grid grid-cols-2 gap-2 mt-2">
           <InputNumber
-            label={"Crop Modulo Width"}
-            bind:value={dataset.exportCropModuloWidth}
+            label={"Crop Width"}
+            bind:value={dataset.exportCropWidth}
           />
           <InputNumber
-            label={"Crop Modulo Height"}
-            bind:value={dataset.exportCropModuloHeight}
+            label={"Crop Height"}
+            bind:value={dataset.exportCropHeight}
           />
         </div>
       {/if}
     </div>
-    <div class="grid grid-cols-2 gap-2">
-      <InputNumber label={"Crop Width"} bind:value={dataset.exportCropWidth} />
-      <InputNumber
-        label={"Crop Height"}
-        bind:value={dataset.exportCropHeight}
-      />
+
+    <div>
+      <InputCheckbox label="Resize" bind:value={dataset.exportResize} />
+      {#if dataset.exportResize}
+        <div class="grid grid-cols-2 gap-2 mt-2">
+          <InputNumber
+            label={"Resize Width"}
+            bind:value={dataset.exportWidth}
+          />
+          <InputNumber
+            label={"Resize Height"}
+            bind:value={dataset.exportHeight}
+          />
+        </div>
+      {/if}
     </div>
-    <div class="grid grid-cols-2 gap-2">
-      <InputNumber label={"Out Width"} bind:value={dataset.exportWidth} />
-      <InputNumber label={"Out Height"} bind:value={dataset.exportHeight} />
-    </div>
+
     <div>
       <InputText
         label={"Export Path"}
@@ -74,6 +77,12 @@
             max = filtered.length;
           exportStatus = `Exporting: 0/${max}`;
           let tasks = filtered.map((img, i) => {
+
+            const cropwidth = dataset.exportCrop ? dataset.exportCropWidth : 0;
+            const cropheight = dataset.exportCrop ? dataset.exportCropHeight : 0;
+            const width = dataset.exportResize ? dataset.exportWidth : 0;
+            const height = dataset.exportResize ? dataset.exportHeight : 0;
+
             return invoke("export_image", {
               imgPath: img.path,
               exportPath:
@@ -82,16 +91,10 @@
                 i +
                 ".png",
               description: getImageDescription(dataset, img),
-              width: dataset.exportWidth,
-              height: dataset.exportHeight,
-              cropmodulowidth: dataset.exportCropModulo
-                ? dataset.exportCropModuloWidth
-                : dataset.exportCropWidth,
-              cropmoduloheight: dataset.exportCropModulo
-                ? dataset.exportCropModuloHeight
-                : dataset.exportCropHeight,
-              cropwidth: dataset.exportCropWidth,
-              cropheight: dataset.exportCropHeight,
+              width,
+              height,
+              cropwidth,
+              cropheight,
             }).then(() => (exportStatus = `Exporting: ${++done}/${max}`));
           });
 

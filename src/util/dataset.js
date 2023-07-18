@@ -7,21 +7,20 @@ export const conform = (input) => {
 
   // function creates default dataset info and merges it with input if provided
   const result = {
-    name                  : '',
-    images                : [],
-    inputFolders          : [],
-    tagGroups             : [],
-    tags                  : [],
-    descriptionString     : '{custom}',
-    exportWidth           : 512,
-    exportHeight          : 512,
-    exportCropModulo      : false,
-    exportCropModuloWidth : 512,
-    exportCropModuloHeight: 512,
-    exportCropWidth       : 512,
-    exportCropHeight      : 512,
-    exportPath            : '',
-    exportClear           : false,
+    name             : '',
+    images           : [],
+    inputFolders     : [],
+    tagGroups        : [],
+    tags             : [],
+    descriptionString: '{custom}',
+    exportResize     : false,
+    exportWidth      : 512,
+    exportHeight     : 512,
+    exportCrop       : false,
+    exportCropWidth  : 512,
+    exportCropHeight : 512,
+    exportPath       : '',
+    exportClear      : false,
     ...(input !== undefined ? input : {})
   }
 

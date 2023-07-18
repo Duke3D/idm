@@ -1,4 +1,6 @@
 <script>
+// @ts-nocheck
+
   import InputMultiBlock from "../components/inputs/InputMultiBlock.svelte";
   import InputText from "../components/inputs/InputText.svelte";
   import InputSelect from "../components/inputs/InputSelect.svelte";
