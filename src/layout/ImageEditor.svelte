@@ -8,6 +8,8 @@
   import InputCheckbox from "../components/inputs/InputCheckbox.svelte";
   export let activeImage;
   export let dataset;
+
+  let width = 0, height = 0
 </script>
 
 <InputMultiBlock>
@@ -17,6 +19,10 @@
       src={convertFileSrc(activeImage.path)}
       alt={activeImage.path}
       loading="lazy"
+      on:load={(e) => {
+        width = e.target.naturalWidth;
+        height = e.target.naturalHeight;
+      }}
     />
   </div>
   <div class="text-xs text-zinc-300 break-all">
@@ -35,5 +41,9 @@
       dataset.images = dataset.images;
     }}
   />
-  <div class="text-xs text-zinc-600 break-all">{activeImage.path}</div>
+
+  <div class="text-xs text-zinc-600 break-all">
+    <div>{width} x {height}</div>
+    <div>{activeImage.path}</div>
+  </div>
 </InputMultiBlock>
