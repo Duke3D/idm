@@ -59,8 +59,8 @@ export const rescanImageFolders = async (dataset) => {
   // conform all image shapes
   dataset.images.forEach(i => {
     i.tags = i.tags || []
-    i.custom = (i.custom !== undefined) ? i.custom : ''
-    i.export = (i.export !== undefined) ? i.export : true
+    if(i.custom === undefined) i.custom = ''
+    if(i.export === undefined) i.export = true
 
     // sanitize tags, ensure they are all unique, integers and found in dataset.tags
     i.tags = i.tags.map(t => parseInt(t)).filter(t => !isNaN(t) && tagFun.resolveTagId(dataset, t))

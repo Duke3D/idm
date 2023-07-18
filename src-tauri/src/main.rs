@@ -58,7 +58,16 @@ async fn export_image(
                 }
             }
 
-            let out_img = imageops::resize(&out_img, width, height, imageops::FilterType::Lanczos3);
+            let mut out_img = imageops::resize(&out_img, width, height, imageops::FilterType::Lanczos3);
+
+            // flip horizontally
+            if cx >= img_width {
+                out_img = imageops::flip_horizontal(&out_img);
+            }
+
+            if cy >= img_height {
+                out_img = imageops::rotate270(&out_img);
+            }
 
             // add n to path buff
             let new_filename = format!("{}-{}.{}", base_file_stem, n, extension);

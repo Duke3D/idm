@@ -27,9 +27,9 @@ export const conform = (input) => {
 
   // validate groups
   result.tagGroups.forEach(g => {
-    g.join = g.join || ' '
-    g.prefix = g.prefix || ' '
-    g.suffix = g.suffix || ' '
+    if(g.join === undefined) g.join = ' '
+    if(g.prefix === undefined) g.prefix = ''
+    if(g.suffix === undefined) g.suffix = ''
   })
 
   rescanImageFolders(result)

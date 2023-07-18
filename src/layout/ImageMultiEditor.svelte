@@ -7,7 +7,7 @@
   import IconButton from "../components/IconButton.svelte";
   import InputCheckbox from "../components/inputs/InputCheckbox.svelte";
   export let activeImages;
-  export let dataset;
+  // export let dataset;
 </script>
 
 <InputMultiBlock>
