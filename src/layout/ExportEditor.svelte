@@ -40,17 +40,14 @@
     </div>
     <!-- flatten alpha channel if desired -->
     <div>
-      <InputCheckbox label="Flatten Alpha Channel" bind:value={dataset.exportFlattenAlpha} />
+      <InputCheckbox label="Flatten alpha and replace with color" bind:value={dataset.exportFlattenAlpha} />
       <!-- if flatten alpha, check if replace color -->
       {#if dataset.exportFlattenAlpha}
-        <InputCheckbox label="Replace Alpha Color (8-bit RGB)" bind:value={dataset.exportReplaceAlpha} />
-        {#if dataset.exportReplaceAlpha}
-          <div class="grid grid-cols-3 gap-2 mt-2">
-            <InputNumber min={0} max={255} label={''} bind:value={dataset.exportReplaceAlphaColor[0]} />
-            <InputNumber min={0} max={255} label={''} bind:value={dataset.exportReplaceAlphaColor[1]} />
-            <InputNumber min={0} max={255} label={''} bind:value={dataset.exportReplaceAlphaColor[2]} />
-          </div>
-        {/if}
+        <div class="grid grid-cols-3 gap-2 mt-2">
+          <InputNumber min={0} max={255} label={''} bind:value={dataset.exportReplaceAlphaColor[0]} />
+          <InputNumber min={0} max={255} label={''} bind:value={dataset.exportReplaceAlphaColor[1]} />
+          <InputNumber min={0} max={255} label={''} bind:value={dataset.exportReplaceAlphaColor[2]} />
+        </div>
       {/if}
     </div>
 
@@ -88,6 +85,8 @@
               height,
               cropwidth,
               cropheight,
+              flattenalpha: dataset.exportFlattenAlpha,
+              replacealphacolor: dataset.exportReplaceAlphaColor,
             }).then(() => (exportStatus = `Exporting: ${++done}/${max}`));
           });
 

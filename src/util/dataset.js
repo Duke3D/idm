@@ -22,7 +22,6 @@ export const conform = (input) => {
     exportPath             : '',
     exportClear            : false,
     exportFlattenAlpha     : false,
-    exportReplaceAlpha     : false,
     exportReplaceAlphaColor: [0, 0, 0],
     ...(input !== undefined ? input : {})
   }
