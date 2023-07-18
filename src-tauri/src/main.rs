@@ -59,6 +59,9 @@ async fn export_image(
     // Generate text file
     let txt_path = export_path_buf.with_extension("txt");
     let _ = fs::write(txt_path, description.clone()).await;
+
+    // make array of three integers
+    // let mut arr = [0; 3];
 }
 
 #[tauri::command]

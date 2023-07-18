@@ -1,8 +1,7 @@
 <script>
-  export let css = ''
+  export let css = '';
 </script>
 
 <div class={css + ' p-2 text-slate-400'}>
-  <slot>
-  </slot>
+  <slot />
 </div>

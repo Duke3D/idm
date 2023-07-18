@@ -1,14 +1,14 @@
 <script>
   // @ts-nocheck
 
-  import Button from "../components/Button.svelte";
-  import IconButton from "../components/IconButton.svelte";
-  import InputMultiBlock from "../components/inputs/InputMultiBlock.svelte";
-  import InputText from "../components/inputs/InputText.svelte";
-  import InputTextArray from "../components/inputs/InputTextArray.svelte";
-  import InputTextarea from "../components/inputs/InputTextarea.svelte";
-  import * as tagFun from "../util/tags";
-  import { tick } from "svelte";
+  import Button from '../components/Button.svelte';
+  import IconButton from '../components/IconButton.svelte';
+  import InputMultiBlock from '../components/inputs/InputMultiBlock.svelte';
+  import InputText from '../components/inputs/InputText.svelte';
+  import InputTextArray from '../components/inputs/InputTextArray.svelte';
+  import InputTextarea from '../components/inputs/InputTextarea.svelte';
+  import * as tagFun from '../util/tags';
+  import { tick } from 'svelte';
   export let dataset;
   export let activeImages = undefined;
   let editGroup;
@@ -20,19 +20,18 @@
   };
 
   const resolveTagCss = (tagId, activeImages) => {
-    let css =
-      "focus-visible:outline-none text-xs font-bold shadow-md rounded-md px-2 mr-1 mb-0.5 ";
+    let css = 'focus-visible:outline-none text-xs font-bold shadow-md rounded-md px-2 mr-1 mb-0.5 ';
     let count = imgWithTagCount(tagId);
 
     if (count === 0) {
       // if no images have the tag
-      css += "bg-zinc-700 text-zinc-400 border border-zinc-800";
+      css += 'bg-zinc-700 text-zinc-400 border border-zinc-800';
     } else if (count === activeImages.length) {
       // if all images have the tag
-      css += "bg-zinc-500 text-zinc-200 border border-zinc-200";
+      css += 'bg-zinc-500 text-zinc-200 border border-zinc-200';
     } else {
       // if some images have the tag
-      css += "bg-zinc-700 text-zinc-400 border border-zinc-300";
+      css += 'bg-zinc-700 text-zinc-400 border border-zinc-300';
     }
 
     return css;
@@ -48,43 +47,39 @@
 </script>
 
 <InputTextarea
-  label={"Description Template String"}
+  label={'Description Template String'}
   bind:value={dataset.descriptionString}
-  placeholder={"Template string for image description, containing {groupNames} or {custom}"}
-/>
+  placeholder={'Template string for image description, containing {groupNames} or {custom}'} />
 {#if editGroup !== undefined}
   <div class="grid grid-cols-2 gap-2">
-    <InputText label={"Group Name"} bind:value={editGroup.name} />
+    <InputText label={'Group Name'} bind:value={editGroup.name} />
     <InputText
-      label={"Join String"}
+      label={'Join String'}
       placeholder={"' ' or ', ' etc."}
       bind:value={editGroup.join}
       on:input={(e) => {
-        forceUpdate("join", e.target.value);
-      }}
-    />
+        forceUpdate('join', e.target.value);
+      }} />
     <InputText
-      label={"Prefix"}
+      label={'Prefix'}
       placeholder={"e.g. 'With a'"}
       bind:value={editGroup.prefix}
       on:input={(e) => {
-        forceUpdate("prefix", e.target.value);
-      }}
-    />
+        forceUpdate('prefix', e.target.value);
+      }} />
     <InputText
-      label={"Suffix"}
+      label={'Suffix'}
       placeholder={"e.g. ' hilt.'"}
       bind:value={editGroup.suffix}
       on:input={(e) => {
-        forceUpdate("suffix", e.target.value);
-      }}
-    />
+        forceUpdate('suffix', e.target.value);
+      }} />
   </div>
 
   <InputTextArray
-    label={"Tag List"}
+    label={'Tag List'}
     bind:array={editTags}
-    elementBindKey={"name"}
+    elementBindKey={'name'}
     createFun={(e) => {
       tagFun.createTag(editGroup, dataset);
       dataset = dataset;
@@ -92,26 +87,23 @@
     deleteFun={(tag) => {
       tagFun.removeTag(tag, dataset);
       dataset = dataset;
-    }}
-  />
+    }} />
   <!-- <InputTextarea label={"Tag List"} bind:value={editGroup.tags} /> -->
   <div class="grid grid-cols-2 gap-2">
     <Button
-      text={"Ok"}
-      col={"green"}
+      text={'Ok'}
+      col={'green'}
       click={() => {
         editGroup = undefined;
-      }}
-    />
+      }} />
     <Button
-      text={"Remove"}
-      col={"zinc"}
+      text={'Remove'}
+      col={'zinc'}
       click={() => {
         tagFun.removeTagGroup(editGroup, dataset);
         dataset = dataset;
         editGroup = undefined;
-      }}
-    />
+      }} />
   </div>
 {:else}
   {#each dataset.tagGroups as group, i}
@@ -120,12 +112,11 @@
         >{group.name}
         <span class="float-right">
           <IconButton
-            css={"text-sm"}
+            css={'text-sm'}
             id="edit"
             on:click={(e) => {
               editGroup = group;
-            }}
-          />
+            }} />
         </span>
       </span>
 
@@ -134,17 +125,12 @@
           class={resolveTagCss(tagId, activeImages)}
           on:click={(e) => {
             if (imgWithTagCount(tagId) === 0) {
-              activeImages.forEach((img) =>
-                tagFun.enableTagIdOnImage(img, tagId)
-              );
+              activeImages.forEach((img) => tagFun.enableTagIdOnImage(img, tagId));
             } else {
-              activeImages.forEach((img) =>
-                tagFun.disableTagIdOnImage(img, tagId)
-              );
+              activeImages.forEach((img) => tagFun.disableTagIdOnImage(img, tagId));
             }
             dataset = dataset;
-          }}
-        >
+          }}>
           {tagFun.resolveTagId(dataset, tagId).name}
         </button>
       {/each}
@@ -159,7 +145,6 @@
       on:click={(e) => {
         tagFun.createTagGroup(dataset);
         dataset = dataset;
-      }}
-    />
+      }} />
   </div>
 {/if}
