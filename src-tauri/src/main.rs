@@ -68,11 +68,10 @@ async fn export_image(
 
   // store image
   let export_path_buf = PathBuf::from(export_path);
-  out_img.save(&export_path_buf).unwrap();
+  out_img.save(&export_path_buf.with_extension("png")).unwrap();
 
   // Generate text file
-  let txt_path = export_path_buf.with_extension("txt");
-  let _ = fs::write(txt_path, description.clone()).await;
+  let _ = fs::write(export_path_buf.with_extension("txt"), description.clone()).await;
 
 }
 
