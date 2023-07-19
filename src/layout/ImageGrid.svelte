@@ -10,7 +10,7 @@
   export let activeImages;
 
   // image grid style
-  $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr));`;
+  $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr)); grid-auto-rows: 1fr; height:fit-content; max-height: 100%;`;
 
   // filter result
   $: visibleImages = getGridImages(images, $gridImgFilter);
