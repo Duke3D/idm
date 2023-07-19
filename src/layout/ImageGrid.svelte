@@ -101,7 +101,7 @@
     <input type="range" min="80" max="250" bind:value={$gridImgWidth} />
   </div>
   {#if $imgDisplayStyle === 'grid'}
-    <div class="grid gap-2 grow p-1 overflow-auto" style={gridStyle}>
+    <div class="grid gap-2 grow pt-1 pr-1 overflow-auto" style={gridStyle}>
       {#each visibleImages as img (img.path)}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <img
