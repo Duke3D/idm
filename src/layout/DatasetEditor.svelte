@@ -50,7 +50,7 @@
       <InputSourceEditor bind:dataset={activeDataset} path={datasetPath} />
     </DataCol>
   {:else if $activeTab === 'Images'}
-    <div class="grid overflow-hidden divide-x divide-zinc-700" style="grid-template-columns:2fr 1fr 1fr">
+    <div class="grid divide-x divide-zinc-700 min-h-0" style="grid-template-columns:2fr 1fr 1fr">
       <DataCol>
         <ImageGrid bind:dataset={activeDataset} images={activeDataset.images} bind:activeImages />
       </DataCol>

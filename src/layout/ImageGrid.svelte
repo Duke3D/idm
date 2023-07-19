@@ -10,7 +10,7 @@
   export let activeImages;
 
   // image grid style
-  $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr)); grid-auto-rows: 1fr; height:fit-content; max-height: 100%;`;
+  $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr)); grid-auto-rows: 1fr; user-select: none;`;
 
   // filter result
   $: visibleImages = getGridImages(images, $gridImgFilter);
@@ -83,7 +83,7 @@
   });
 </script>
 
-<div class="grid gap-2 divide-y divide-zinc-700 h-screen" style="grid-template-rows: auto 1fr">
+<div class="flex flex-col gap-2 divide-y divide-zinc-700 min-h-0" style="grid-template-rows: auto 1fr">
   <div class="grid gap-1 text-lg" style="grid-template-columns: auto auto 1fr auto auto">
     <IconButton
       id="table_rows"
@@ -101,7 +101,7 @@
     <input type="range" min="80" max="250" bind:value={$gridImgWidth} />
   </div>
   {#if $imgDisplayStyle === 'grid'}
-    <div class="grid gap-2 overflow-y-auto p-1 user-select: none;" style={gridStyle}>
+    <div class="grid gap-2 grow p-1 overflow-auto" style={gridStyle}>
       {#each visibleImages as img (img.path)}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <img
@@ -128,7 +128,7 @@
           alt={img.path}
           loading="lazy" />
       {/each}
-    </div>
+  </div>
   {:else if $imgDisplayStyle === 'table'}
     <div class="overflow-y-auto">
       <table class="table-auto w-full">
