@@ -17,3 +17,10 @@ This tool allows you to conveniently load many images, tag them with information
 ## Planned features
 - Auto toggle of tags based on file paths
 - Export path string interpolation (exporting to `/{type}/0.png` etc)
+
+## Development
+Requires Node and Rust, made with [Tauri](https://tauri.app/).
+```
+npm install
+npm tauri dev
+```
