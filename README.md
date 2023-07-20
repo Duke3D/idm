@@ -4,7 +4,7 @@
 
 This tool allows you to conveniently load many images, tag them with information, batch export, do image operations, cropping, etc. This can be useful for machine learning or gamedev.
 
-![Screenshot](https://github.com/dekdevy/idm/blob/[branch]/screenshot.png?raw=true)
+![Screenshot](https://github.com/dekdevy/idm/blob/main/screenshot.png?raw=true)
 
 ## Current Features
 - Tagging of single and multiple images at the same time
