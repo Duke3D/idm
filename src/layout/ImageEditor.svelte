@@ -16,9 +16,9 @@
 </script>
 
 <InputMultiBlock>
-  <div>
+  <div class="container">
     <img
-      class="rounded-md w-full"
+      class="relative"
       src={convertFileSrc(activeImage.path)}
       alt={activeImage.path}
       loading="lazy"
@@ -45,3 +45,21 @@
     <div>{activeImage.path}</div>
   </div>
 </InputMultiBlock>
+
+<style>
+  .container {
+    width: 100%; /* inherit the width from the parent */
+    padding-bottom: 100%; /* keep the aspect ratio 1:1 (square) */
+    position: relative; /* for the absolute positioning of the child image */
+    overflow: hidden;
+  }
+
+  .container img {
+    position: absolute; /* this allows us to fill the container */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; /* maintain aspect ratio */
+    object-fit: contain;
+  }
+</style>

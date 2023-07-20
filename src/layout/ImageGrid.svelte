@@ -10,7 +10,7 @@
   export let activeImages;
 
   // image grid style
-  $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr)); grid-auto-rows: 1fr; user-select: none;`;
+  $: gridStyle = `grid-template-columns: repeat(auto-fill, minmax(${$gridImgWidth}px, 1fr)); grid-auto-rows: ${$gridImgWidth}px; user-select: none;`;
 
   // filter result
   $: visibleImages = getGridImages(images, $gridImgFilter);
@@ -104,31 +104,30 @@
     <div class="grid gap-2 grow pt-1 pr-1 overflow-auto" style={gridStyle}>
       {#each visibleImages as img (img.path)}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <img
-          on:click={(e) => {
-            // if pressed shift, add to active images
-            if (e.shiftKey) {
-              if (activeImages.indexOf(img) < 0) {
-                activeImages = [...activeImages, img];
-              } else {
-                activeImages = activeImages.filter((i) => i !== img);
-              }
-            } else {
-              if (activeImages.length === 1 && activeImages[0] === img) {
-                activeImages = [];
-              } else {
-                activeImages = [img];
-              }
-            }
-          }}
-          class="cursor-pointer rounded-md drop-shadow-md border border-zinc-900 {!img.export
+        <div
+          style="background-image: url({convertFileSrc(img.path)});"
+          class="imgdiv cursor-pointer rounded-md drop-shadow-md border border-zinc-900 bg-zinc-900 {!img.export
             ? 'opacity-30 grayscale brightness-50'
             : ''} {activeImages.indexOf(img) >= 0 ? 'outline outline-zinc-300' : 'hover:border-zinc-500'}"
-          src={convertFileSrc(img.path)}
-          alt={img.path}
-          loading="lazy" />
+              on:click={(e) => {
+                // if pressed shift, add to active images
+                if (e.shiftKey) {
+                  if (activeImages.indexOf(img) < 0) {
+                    activeImages = [...activeImages, img];
+                  } else {
+                    activeImages = activeImages.filter((i) => i !== img);
+                  }
+                } else {
+                  if (activeImages.length === 1 && activeImages[0] === img) {
+                    activeImages = [];
+                  } else {
+                    activeImages = [img];
+                  }
+                }
+              }}>
+        </div>
       {/each}
-  </div>
+    </div>
   {:else if $imgDisplayStyle === 'table'}
     <div class="overflow-y-auto">
       <table class="table-auto w-full">
@@ -163,4 +162,13 @@
     max-width: 0;
     width: 100%;
   }
+
+  .imgdiv {
+    background-image: url("your-image-url");
+    background-size:contain;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+
 </style>

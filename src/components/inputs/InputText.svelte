@@ -12,6 +12,7 @@
   <div class="grid gap-1" style="grid-template-columns: 1fr {path ? 'auto' : ''};">
     <input
       on:input
+      spellcheck="false"
       autocomplete="off"
       {placeholder}
       id="wrapped"

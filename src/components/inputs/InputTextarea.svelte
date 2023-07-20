@@ -8,6 +8,7 @@
 <InputWrap {label}>
   <textarea
     {placeholder}
+    spellcheck="false"
     id="wrapped"
     bind:value
     rows="3"
