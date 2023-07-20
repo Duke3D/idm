@@ -14,7 +14,7 @@ This tool allows you to conveniently load many images, tag them with information
 - Filtering of images based on tags, filenames, group tag counts
 - Flattening of alpha channels, replacing alpha with color
 
-## Planned features
+## Planned Features
 - Auto toggle of tags based on file paths
 - Export path string interpolation (exporting to `/{type}/0.png` etc)
 
@@ -22,5 +22,5 @@ This tool allows you to conveniently load many images, tag them with information
 Requires Node and Rust, made with [Tauri](https://tauri.app/).
 ```
 npm install
-npm tauri dev
+npm run tauri dev
 ```

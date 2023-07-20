@@ -19,10 +19,9 @@ async fn export_image(
   flattenalpha: bool,
   replacealphacolor: [u8; 3],
 ) {
-  // load image, resize if necessary
-  let dyn_img: image::DynamicImage = image::open(img_path).unwrap();
-  // turn into image buffer
-  let img = dyn_img.to_rgba8();
+
+  // load image as rgba8 buff
+  let img = image::open(img_path).unwrap().to_rgba8();
   let (img_width, img_height) = img.dimensions();
 
   // mutable containing the resulting image
@@ -31,10 +30,10 @@ async fn export_image(
   // crop contents of img into out_img based on cropwidth, cropheight using imgops crop
   // only do it if cropwidth or cropheight is not zero
   if cropwidth > 0 || cropheight > 0 {
-    out_img = ImageBuffer::new(cropwidth, cropheight);
     // ensure that the image we're cropping from is actually smaller - limit the crop width and height to the img_width and img_height
     let cropwidth = cmp::min(cropwidth, img_width);
     let cropheight = cmp::min(cropheight, img_height);
+    out_img = ImageBuffer::new(cropwidth, cropheight);
     // in order to center, calculate the horizontal difference between width and input image width, halved
     let wdiff = (img_width - cropwidth) / 2;
     let hdiff = (img_height - cropheight) / 2;
