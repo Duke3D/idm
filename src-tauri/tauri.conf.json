@@ -8,10 +8,14 @@
   },
   "package": {
     "productName": "idm",
-    "version": "0.0.0"
+    "version": "0.0.1"
   },
   "tauri": {
     "allowlist": {
+      "all": false,
+      "window": {
+        "setTitle": true
+      },
       "globalShortcut": {
         "all": true
       },
@@ -19,22 +23,12 @@
         "asset": true,
         "assetScope": ["**/*"]
       },
-      "all": false,
       "fs": {
         "all": true,
         "scope": ["**/*"]
       },
-      "shell": {
-        "all": false,
-        "open": true
-      },
       "dialog": {
-        "all": true,
-        "ask": true,
-        "confirm": true,
-        "message": true,
-        "open": true,
-        "save": true
+        "all": true
       }
     },
     "bundle": {

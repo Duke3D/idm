@@ -11,13 +11,21 @@
   import TagEditor from './TagEditor.svelte';
   import { onMount, onDestroy } from 'svelte';
   import * as datasetFun from '../util/dataset.js';
-
+  import { setUnsavedIndicator, setFilename } from '../util/window'
   export let datasetPath;
   export let activeDataset;
   let activeImages = [];
-
   let serializedDataset = JSON.stringify(activeDataset);
-  $: hasChanges = hasChanges || serializedDataset !== JSON.stringify(activeDataset);
+  let hasChanges = false;
+
+  $: {
+    hasChanges = hasChanges || serializedDataset !== JSON.stringify(activeDataset);
+    setUnsavedIndicator(hasChanges)
+  }
+
+  $: {
+    setFilename(activeDataset.name)
+  }
 
   const keyDown = (e) => {
     // ctrl + s, only if down

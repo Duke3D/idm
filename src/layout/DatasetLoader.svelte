@@ -4,9 +4,13 @@
   import InputSelect from '../components/inputs/InputSelect.svelte';
   import InputWrap from '../components/inputs/InputWrap.svelte';
   import { recentDatasets } from '../util/settings';
+  import { setUnsavedIndicator, setFilename } from '../util/window'
   import * as dataset from '../util/dataset.js';
   export let datasetPath;
   export let activeDataset;
+
+  setUnsavedIndicator(false);
+  setFilename("")
 </script>
 
 <div class="flex h-screen">
